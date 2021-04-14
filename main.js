@@ -1,13 +1,24 @@
+// BUTTONS
+const logoutButton = document.querySelector('#logout-button')
 const signupButton = document.querySelector('#signup-button')
 const loginButton = document.querySelector('#login-button')
+const allBusinessesButton = document.querySelector('#all-businesses-button')
+const homeButton = document.querySelector('#home-button')
+const listBusinessButton = document.querySelector('#list-businesses-button')
+
+// FORMS
+const signupForm = document.querySelector('.signup-form')
+const loginForm = document.querySelector('.login-form')
+
+//SECTIONS
 const signupScreen = document.querySelector('#signup-screen')
 const loginScreen = document.querySelector('#login-screen')
 const sections = document.querySelectorAll('section')
-const signupForm = document.querySelector('.signup-form')
-const loginForm = document.querySelector('.login-form')
-const logoutButton = document.querySelector('#logout-button')
+const homeScreen = document.querySelector('#home-screen')
+const allBusinessesScreen = document.querySelector('#all-businesses-section')
 
 
+//BUTTON EVENT LISTENERS
 signupButton.addEventListener("click", () => {
     buttonController(signupScreen)
 })
@@ -16,6 +27,21 @@ loginButton.addEventListener("click", () => {
     buttonController(loginScreen)
 })
 
+homeButton.addEventListener('click', () => {
+    buttonController(homeScreen)
+})
+
+allBusinessesButton.addEventListener("click", () => {
+    buttonController(allBusinessesScreen)
+})
+
+logoutButton.addEventListener('click', () => [
+    localStorage.clear(),
+    logoutStateButtons(),
+    buttonController(homeScreen)
+])
+
+//FORM EVENT LISTENERS
 signupForm.addEventListener('submit', (e) => {
     console.log("signup")
     e.preventDefault()
@@ -28,6 +54,9 @@ loginForm.addEventListener('submit', (e) => {
     loginFunction()
 })
 
+//REQUEST FUNCTIONS
+
+//SIGN UP
 signupFunction = async () => {
     const name = document.querySelector('#signup-name').value
     const email = document.querySelector('#signup-email').value
@@ -38,17 +67,19 @@ signupFunction = async () => {
             email: email,
             password: password,
         })
-        let userId = res.data.user.id
+        console.log(res.data)
+        let userId = res.data.newUser.id
         localStorage.setItem('userId', userId)
-        let userName = res.data.user.name
+        let userName = res.data.newUser.name
         localStorage.setItem('userName', userName)
+        buttonController(homeScreen)
         loginStateButtons()
-        
     } catch (error) {
         alert('email already exists or invalid')
     }
 }
 
+//LOGIN
 loginFunction = async () => {
     const email = document.querySelector('#login-email').value
     const password = document.querySelector('#login-password').value
@@ -58,20 +89,30 @@ loginFunction = async () => {
             password: password
         })
         let userId = res.data.user.id
+        localStorage.setItem('userId', userId)
         let userName = res.data.user.name
         localStorage.setItem('userName', userName)
-        localStorage.setItem('userId', userId)
         loginStateButtons()
-
+        buttonController(homeScreen)
     } catch (error) {
         alert('login failed')
     }
 }
 
+//UTILITY FUNCTIONS
+
+logoutStateButtons = () => {
+    removeHidden(loginButton)
+    removeHidden(signupButton)
+    addHidden(logoutButton)
+    addHidden(listBusinessButton)
+}
+
 loginStateButtons = () => {
     addHidden(loginButton)
     addHidden(signupButton)
-
+    removeHidden(logoutButton)
+    removeHidden(listBusinessButton)
 }
 
 buttonController = (thing) => {
@@ -89,4 +130,12 @@ removeHidden = (thing) => {
 
 addHidden = (thing) => {
     thing.classList.add('hidden')
+}
+
+if (localStorage.getItem('userId')) {
+    loginStateButtons()
+
+}
+else {
+    logoutStateButtons()
 }
