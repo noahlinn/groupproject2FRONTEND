@@ -9,6 +9,7 @@ const listBusinessButton = document.querySelector('#list-businesses-button')
 // FORMS
 const signupForm = document.querySelector('.signup-form')
 const loginForm = document.querySelector('.login-form')
+const createBusinessForm = document.querySelector('.create-form')
 
 //SECTIONS
 const signupScreen = document.querySelector('#signup-screen')
@@ -16,7 +17,7 @@ const loginScreen = document.querySelector('#login-screen')
 const sections = document.querySelectorAll('section')
 const homeScreen = document.querySelector('#home-screen')
 const allBusinessesScreen = document.querySelector('#all-businesses-section')
-
+const createBusinessSection = document.querySelector('#create-business-section')
 
 //BUTTON EVENT LISTENERS
 signupButton.addEventListener("click", () => {
@@ -25,6 +26,10 @@ signupButton.addEventListener("click", () => {
 
 loginButton.addEventListener("click", () => {
     buttonController(loginScreen)
+})
+
+listBusinessButton.addEventListener("click", () => {
+    buttonController(createBusinessSection)
 })
 
 homeButton.addEventListener('click', () => {
@@ -52,6 +57,11 @@ loginForm.addEventListener('submit', (e) => {
     console.log("login")
     e.preventDefault()
     loginFunction()
+})
+
+createBusinessForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    createBusiness()
 })
 
 //REQUEST FUNCTIONS
@@ -98,6 +108,37 @@ loginFunction = async () => {
         alert('login failed')
     }
 }
+
+//DISPLAY ALL BUSINESSES
+displayAllBusinesses = async () => {
+    try {
+        let res = await axios.post('http://localhost:3001/businesses')
+    } catch (error) {
+        
+    }
+
+}
+
+//CREATE BUSINESS 
+createBusiness = async () => {
+    const name = document.querySelector('#create-name').value
+    const address = document.querySelector('#create-address').value
+    const description = document.querySelector('#create-description').value
+    const type = document.querySelector('#create-type').value
+    console.log(name, address, description, type)
+    try {
+        let userId = localStorage.getItem('userId')
+        let res = await axios.post('http://localhost:3001/businesses/create', {
+            name: name,
+            address: address,
+            description: description,
+            type: type
+        })
+    } catch (error) {
+        
+    }
+}
+
 
 //UTILITY FUNCTIONS
 
