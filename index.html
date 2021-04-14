@@ -12,44 +12,72 @@
 </head>
 
 <body>
-    <div id = "home-screen">
+    <div id="header-div">
         <h1>Welp</h1>
-        <button id = "home-button">Home</button>
-        <button id = "all-businesses-button">All Businesses</button>
-        <button id = "signup-button">Signup</button>
-        <button id = "login-button">login</button>
-        <button id = "list-businesses-button" class = "hidden">List Your Business</button>
-        <button id = "logout-button" class = "hidden">Logout</button>
+        <button id="home-button">Home</button>
+        <button id="all-businesses-button">All Businesses</button>
+        <button id="signup-button">Signup</button>
+        <button id="login-button">login</button>
+        <button id="list-businesses-button" class="hidden">List Your Business</button>
+        <button id="logout-button" class="hidden">Logout</button>
     </div>
-        <section id = "signup-screen" class = "hidden">
-            <form class="signup-form">
-                <h2 class="signup-header">Sign Up</h2>
-                <label for="signup-name">Name</label>
-                <input type="text" id="signup-name" >
-                <label for="signup-email">Email</label>
-                <input type="text" id="signup-email" >
-                <label for="signup-password">Password</label>
-                <input type="password" id="signup-password" >
-                <input type="submit" value="Sign Up!">
-            </form>
-        </section>
-        <section id = "login-screen" class = "hidden">
-            <form class="login-form">
-                <h2 class="login-header">Login</h2>
-                <label for="login-email">Email</label>
-                <input type="text" id="login-email">
-    
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password">
-    
-                <input type="submit" value="Log In!">
-            </form>
-        </section>
-        <section id = "all-businesses-section" class = "hidden">
-            <h1>All Businesses</h1>
-        </section>
+    <section id="home-screen">
 
-    
+        <h2>Home Page</h2>
+
+    </section>
+
+    <section id="signup-screen" class="hidden">
+        <form class="signup-form">
+            <h2 class="signup-header">Sign Up</h2>
+            <label for="signup-name">Name</label>
+            <input type="text" id="signup-name">
+            <label for="signup-email">Email</label>
+            <input type="text" id="signup-email">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password">
+            <input type="submit" value="Sign Up!">
+        </form>
+    </section>
+    <section id="login-screen" class="hidden">
+        <form class="login-form">
+            <h2 class="login-header">Login</h2>
+            <label for="login-email">Email</label>
+            <input type="text" id="login-email">
+
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password">
+
+            <input type="submit" value="Log In!">
+        </form>
+    </section>
+    <section id="all-businesses-section" class="hidden">
+        <h1>All Businesses</h1>
+    </section>
+    <section id="create-business-section" class="hidden">
+        <form class="create-form">
+            <h2 class="create-header">Add New Business</h2>
+            <label for="create-name">Name</label>
+            <input type="text" id="create-name">
+            <label for="create-address">Address</label>
+            <input type="text" id="create-address">
+            <label for="create-description">Description</label>
+            <input type="text" id="create-description">
+            <label for="create-type ">Type</label>
+            <select id="create-type" name="type">
+                <option value="Food">Food</option>
+                <option value="Arts & Entertainment">Arts & Entertainment</option>
+                <option value="Health & Medical">Health & Medical</option>
+                <option value="Professional Services">Professional Services</option>
+                <option value="Pets">Pets</option>
+                <option value="Real Estate">Real Estate</option>
+                <option value="Hotels & Travel">Hotels & Travel</option>
+            </select>
+            <input type="submit" value="Create Business!">
+        </form>
+    </section>
+
+
     <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js "></script>
     <script src="main.js" async defer></script>
 </body>
