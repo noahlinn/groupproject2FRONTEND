@@ -8,11 +8,48 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Hello World</h1>
+    <div id = "home-screen">
+        <h1>Welp</h1>
+        <button id = "home-button">Home</button>
+        <button id = "all-businesses-button">All Businesses</button>
+        <button id = "signup-button">Signup</button>
+        <button id = "login-button">login</button>
+        <button id = "list-businesses-button" class = "hidden">List Your Business</button>
+        <button id = "logout-button" class = "hidden">Logout</button>
+    </div>
+        <section id = "signup-screen" class = "hidden">
+            <form class="signup-form">
+                <h2 class="signup-header">Sign Up</h2>
+                <label for="signup-name">Name</label>
+                <input type="text" id="signup-name" >
+                <label for="signup-email">Email</label>
+                <input type="text" id="signup-email" >
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" >
+                <input type="submit" value="Sign Up!">
+            </form>
+        </section>
+        <section id = "login-screen" class = "hidden">
+            <form class="login-form">
+                <h2 class="login-header">Login</h2>
+                <label for="login-email">Email</label>
+                <input type="text" id="login-email">
+    
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password">
+    
+                <input type="submit" value="Log In!">
+            </form>
+        </section>
+        <section id = "all-businesses-section" class = "hidden">
+            <h1>All Businesses</h1>
+        </section>
+
+    
     <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js "></script>
     <script src="main.js" async defer></script>
 </body>
