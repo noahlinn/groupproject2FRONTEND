@@ -18,6 +18,9 @@ const sections = document.querySelectorAll('section')
 const homeScreen = document.querySelector('#home-screen')
 const allBusinessesScreen = document.querySelector('#all-businesses-section')
 const createBusinessSection = document.querySelector('#create-business-section')
+let nameDiv = document.createElement('div')
+
+let businessId = null
 
 //BUTTON EVENT LISTENERS
 signupButton.addEventListener("click", () => {
@@ -38,6 +41,7 @@ homeButton.addEventListener('click', () => {
 
 allBusinessesButton.addEventListener("click", () => {
     buttonController(allBusinessesScreen)
+    displayAllBusinesses()
 })
 
 logoutButton.addEventListener('click', () => [
@@ -62,6 +66,8 @@ loginForm.addEventListener('submit', (e) => {
 createBusinessForm.addEventListener('submit', (e) => {
     e.preventDefault()
     createBusiness()
+    buttonController(allBusinessesScreen)
+    
 })
 
 //REQUEST FUNCTIONS
@@ -111,11 +117,30 @@ loginFunction = async () => {
 
 //DISPLAY ALL BUSINESSES
 displayAllBusinesses = async () => {
+    clearResults(nameDiv)
     try {
-        let res = await axios.post('http://localhost:3001/businesses')
+        let res = await axios.get('http://localhost:3001/businesses')
+        res.data.forEach(i => {
+            let name = i.name
+            let businessId = i.id
+            displayName(name, businessId)
+        })
     } catch (error) {
         
     }
+}
+
+displayName = (eachName, id) => { 
+    let name = document.createElement('h3')
+    name.innerText = eachName
+    allBusinessesScreen.append(nameDiv)
+    nameDiv.append(name)
+    name.addEventListener('click', () => {
+        console.log(id)
+    })
+}
+
+displaySingle = () => {
 
 }
 
@@ -125,24 +150,27 @@ createBusiness = async () => {
     const address = document.querySelector('#create-address').value
     const description = document.querySelector('#create-description').value
     const type = document.querySelector('#create-type').value
-    console.log(name, address, description, type)
     try {
         let userId = localStorage.getItem('userId')
-        let res = await axios.post('http://localhost:3001/businesses/create', {
+        let res = await axios.post('http://localhost:3001/businesses', {
+            userId: userId,
             name: name,
             address: address,
             description: description,
             type: type
         })
+         console.log(res.data)
+         alert('New Business Created')
+         displayAllBusinesses()
     } catch (error) {
-        
+        error('Business failed to create')
     }
 }
 
 
 //UTILITY FUNCTIONS
 
-logoutStateButtons = () => {
+logoutStateButtons = () => { 
     removeHidden(loginButton)
     removeHidden(signupButton)
     addHidden(logoutButton)
@@ -171,6 +199,12 @@ removeHidden = (thing) => {
 
 addHidden = (thing) => {
     thing.classList.add('hidden')
+}
+
+clearResults = (result) => {
+    while (result.firstChild) {
+        result.firstChild.remove()
+    }
 }
 
 if (localStorage.getItem('userId')) {
