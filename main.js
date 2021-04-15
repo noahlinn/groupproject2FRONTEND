@@ -165,6 +165,7 @@ displayName = (eachName, id) => {
 
 //GETS INFO FOR ONE BUSINESS
 getSingle = async (id) => {
+    
     try {
         clearResults(busiessInfoDiv)
         buttonController(singleBusinessSection)
@@ -173,7 +174,7 @@ getSingle = async (id) => {
         localStorage.setItem('businessId', id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
             res.data.business.type, res.data.business.description, res.data.owner.name)
-        getAllReviews()
+        // getAllReviews()
     } catch (error) {
 
     }
@@ -181,6 +182,7 @@ getSingle = async (id) => {
 
 //DISPLAYS BUSINESS INFO ON SINGLE BUSINESS PAGE 
 diplayOneBusiness = (name, address, type, description, owner) => {
+    
     reviewFormController()
     let nameHeader = document.createElement('h2')
     let displayAddress = document.createElement('p')
@@ -240,6 +242,7 @@ getAllReviews = async (id) => {
             let reviewRating = i.review.rating
             displayReviews(userName, reviewTitle, reviewDescription, reviewRating)
         }) 
+        console.log(res.data.reviews)
     } catch (error) {
 
     }
