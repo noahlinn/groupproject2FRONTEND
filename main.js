@@ -11,7 +11,10 @@ const signupForm = document.querySelector('.signup-form')
 const loginForm = document.querySelector('.login-form')
 const createBusinessForm = document.querySelector('.create-form')
 const createReviewForm = document.querySelector('.create-review-div')
-
+const searchByTypeForm = document.querySelector('.search-by-type')
+const category = document.querySelector('#search-type')
+const searchByNameForm = document.querySelector('.search-by-name')
+const businessName = document.querySelector('#business-name')
 //SECTIONS
 const signupScreen = document.querySelector('#signup-screen')
 const loginScreen = document.querySelector('#login-screen')
@@ -88,6 +91,18 @@ createReviewForm.addEventListener('submit', (e) => {
 })
 
 
+searchByTypeForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let type = `/byType/${category.value}`
+    displayBy(type)
+})
+
+searchByNameForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let name = `/byName/${businessName.value}`
+    displayBy(name)
+})
+
 //REQUEST FUNCTIONS
 
 //SIGN UP
@@ -138,7 +153,7 @@ loginFunction = async () => {
 displayAllBusinesses = async () => {
     clearResults(nameDiv)
     try {
-        let res = await axios.get('http://localhost:3001/businesses')
+        let res = await axios.get(`http://localhost:3001/businesses`)
         res.data.forEach(i => {
             let name = i.name
             let businessId = i.id
@@ -146,6 +161,21 @@ displayAllBusinesses = async () => {
         })
     } catch (error) {
 
+    }
+}
+
+displayBy = async (type) => {
+    clearResults(nameDiv)
+    try {
+        const res = await axios.get(`http://localhost:3001/businesses/${type}`)
+        console.log(res.data);
+        res.data.forEach(i => {
+            let name = i.name
+            let businessId = i.id
+            displayName(name, businessId)
+        })
+    } catch (error) {
+        
     }
 }
 
@@ -284,6 +314,7 @@ createBusiness = async () => {
         })
         console.log(res.data)
         alert('New Business Created')
+       
         displayAllBusinesses()
     } catch (error) {
         error('Business failed to create')
