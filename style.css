@@ -1,3 +1,6 @@
+.hidden{
+    display: none;
+}
 body{
    display: flex;
    flex-direction: column;
@@ -66,6 +69,7 @@ body{
     color: black;
     padding: 15px 32px;
     text-align: center;
+    /* display: inline-block; */
     font-size: 16px;
     cursor: pointer;
 }
@@ -81,6 +85,7 @@ body{
     color: black;
     padding: 15px 32px;
     text-align: center;
+    /* display: inline-block; */
     font-size: 16px;
     cursor: pointer;
 }
@@ -201,6 +206,3 @@ body{
 
 
 
-.hidden{
-    display: none;
-}

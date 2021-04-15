@@ -22,8 +22,13 @@ const createBusinessSection = document.querySelector('#create-business-section')
 const singleBusinessSection = document.querySelector('#single-business-section')
 let nameDiv = document.createElement('div')
 let busiessInfoDiv = document.querySelector('.business-info-div')
+let allReviewsDiv = document.querySelector('.display-reviews-div')
+let reviewFormDiv = document.querySelector('.create-review-div')
 
 let businessId = null
+
+
+
 
 //BUTTON EVENT LISTENERS
 signupButton.addEventListener("click", () => {
@@ -51,6 +56,7 @@ logoutButton.addEventListener('click', () => [
     localStorage.clear(),
     logoutStateButtons(),
     buttonController(homeScreen)
+
 ])
 
 //FORM EVENT LISTENERS
@@ -70,14 +76,17 @@ createBusinessForm.addEventListener('submit', (e) => {
     e.preventDefault()
     createBusiness()
     buttonController(allBusinessesScreen)
+})
+
+createReviewForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let id = localStorage.getItem('businessId')
+    clearResults(allReviewsDiv)
+    createReview(id)
+    getAllReviews(id)
 
 })
-setUpReviewForm = (id) => {
-    createReviewForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-        createReview(id)
-    })
-}
+
 
 //REQUEST FUNCTIONS
 
@@ -148,8 +157,8 @@ displayName = (eachName, id) => {
     nameDiv.append(name)
     name.addEventListener('click', () => {
         console.log(id)
+        clearResults(allReviewsDiv)
         getSingle(id)
-        setUpReviewForm(id)
         getAllReviews(id)
     })
 }
@@ -161,8 +170,10 @@ getSingle = async (id) => {
         buttonController(singleBusinessSection)
         let res = await axios.get(`http://localhost:3001/businesses/${id}`)
         console.log(res.data)
+        localStorage.setItem('businessId', id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
             res.data.business.type, res.data.business.description, res.data.owner.name)
+        getAllReviews()
     } catch (error) {
 
     }
@@ -170,6 +181,7 @@ getSingle = async (id) => {
 
 //DISPLAYS BUSINESS INFO ON SINGLE BUSINESS PAGE 
 diplayOneBusiness = (name, address, type, description, owner) => {
+    reviewFormController()
     let nameHeader = document.createElement('h2')
     let displayAddress = document.createElement('p')
     let displayType = document.createElement('p')
@@ -182,6 +194,7 @@ diplayOneBusiness = (name, address, type, description, owner) => {
     createdBy.innerText = `Listed by ${owner}`
     busiessInfoDiv.append(nameHeader, displayType, displayAddress,
         displayDescription, createdBy)
+
 }
 
 //CREATE REVIEW
@@ -192,28 +205,67 @@ createReview = async (id) => {
     const title = document.querySelector('#review-title').value
     const description = document.querySelector('#review-description').value
     try {
+
         let res = await axios.post('http://localhost:3001/reviews', {
             userId: userId,
             businessId: businessId,
             rating: rating,
-            title:title,
+            title: title,
             description: description
         })
-        console.log(res.data.newReview)
+        
     } catch (error) {
         error('nope')
     }
 }
 
+//GET ALL REVIEWS FOR EACH BUSINESS 
 getAllReviews = async (id) => {
     try {
+        // clearResults(allReviewsDiv)
+
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
-        console.log(res.data)
+        let ratingArr = []
+        res.data.reviews.forEach(i => {
+            let rating = i.review.rating
+            ratingArr.push(rating)
+        })
+        let avg = arr => arr.reduce((a, b) => a + b) / arr.length
+        averageRating = avg(ratingArr)
+        displayAverageRating(averageRating)
+        res.data.reviews.forEach(i => {
+            let userName = i.name
+            let reviewTitle = i.review.title
+            let reviewDescription = i.review.description
+            let reviewRating = i.review.rating
+            displayReviews(userName, reviewTitle, reviewDescription, reviewRating)
+        }) 
     } catch (error) {
-        
+
     }
 }
+displayAverageRating = (avg) => {
+    busiessInfoDiv.removeChild(busiessInfoDiv.lastElementChild)
+    let averageHeader = document.createElement('h4')
+    averageHeader.innerText = `Average Rating: ${avg}`
+    busiessInfoDiv.append(averageHeader)
+}
 
+//DISPLAY ALL THE REVIEWS
+displayReviews = (name, title, description, rating) => {
+
+    let createdBy = document.createElement('p')
+    let reviewTitle = document.createElement('h3')
+    let reviewDescription = document.createElement('p')
+    let reviewRating = document.createElement('p')
+    createdBy.innerText = `Left by ${name}`
+    reviewTitle.innerText = title
+    reviewDescription.innerText = description
+    reviewRating.innerText = `${rating} out of 5`
+    allReviewsDiv.prepend(reviewTitle, reviewRating, createdBy, reviewDescription)
+
+
+}
 
 //CREATE BUSINESS 
 createBusiness = async () => {
@@ -240,6 +292,14 @@ createBusiness = async () => {
 
 
 //UTILITY FUNCTIONS
+reviewFormController = () => {
+    if (localStorage.getItem('userId')) {
+        removeHidden(reviewFormDiv)
+    }
+    else {
+        addHidden(reviewFormDiv)
+    }
+}
 
 logoutStateButtons = () => {
     removeHidden(loginButton)
@@ -255,11 +315,11 @@ loginStateButtons = () => {
     removeHidden(listBusinessButton)
 }
 
-
 buttonController = (thing) => {
     hideSections()
     removeHidden(thing)
 }
+
 
 hideSections = () => {
     sections.forEach(section => section.classList.add('hidden'))
@@ -285,4 +345,8 @@ if (localStorage.getItem('userId')) {
 }
 else {
     logoutStateButtons()
+
 }
+
+
+
