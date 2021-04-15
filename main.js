@@ -173,6 +173,7 @@ getSingle = async (id) => {
         localStorage.setItem('businessId', id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
             res.data.business.type, res.data.business.description, res.data.owner.name)
+        getAllReviews()
     } catch (error) {
 
     }
@@ -212,7 +213,7 @@ createReview = async (id) => {
             title: title,
             description: description
         })
-        console.log(res.data)
+        
     } catch (error) {
         error('nope')
     }
@@ -221,7 +222,8 @@ createReview = async (id) => {
 //GET ALL REVIEWS FOR EACH BUSINESS 
 getAllReviews = async (id) => {
     try {
-        clearResults(allReviewsDiv)
+        // clearResults(allReviewsDiv)
+
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
         let ratingArr = []
         res.data.reviews.forEach(i => {
@@ -243,6 +245,7 @@ getAllReviews = async (id) => {
     }
 }
 displayAverageRating = (avg) => {
+    busiessInfoDiv.removeChild(busiessInfoDiv.lastElementChild)
     let averageHeader = document.createElement('h4')
     averageHeader.innerText = `Average Rating: ${avg}`
     busiessInfoDiv.append(averageHeader)
