@@ -84,7 +84,7 @@ createReviewForm.addEventListener('submit', (e) => {
     clearResults(allReviewsDiv)
     createReview(id)
     getAllReviews(id)
-    
+
 })
 
 
@@ -193,7 +193,7 @@ diplayOneBusiness = (name, address, type, description, owner) => {
     createdBy.innerText = `Listed by ${owner}`
     busiessInfoDiv.append(nameHeader, displayType, displayAddress,
         displayDescription, createdBy)
-    
+
 }
 
 //CREATE REVIEW
@@ -204,7 +204,7 @@ createReview = async (id) => {
     const title = document.querySelector('#review-title').value
     const description = document.querySelector('#review-description').value
     try {
-        
+
         let res = await axios.post('http://localhost:3001/reviews', {
             userId: userId,
             businessId: businessId,
@@ -223,23 +223,34 @@ getAllReviews = async (id) => {
     try {
         clearResults(allReviewsDiv)
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
-        console.log(res.data.reviews)
+        let ratingArr = []
+        res.data.reviews.forEach(i => {
+            let rating = i.review.rating
+            ratingArr.push(rating)
+        })
+        let avg = arr => arr.reduce((a, b) => a + b) / arr.length
+        averageRating = avg(ratingArr)
+        displayAverageRating(averageRating)
         res.data.reviews.forEach(i => {
             let userName = i.name
             let reviewTitle = i.review.title
             let reviewDescription = i.review.description
             let reviewRating = i.review.rating
             displayReviews(userName, reviewTitle, reviewDescription, reviewRating)
-
-        })
+        }) 
     } catch (error) {
 
     }
 }
+displayAverageRating = (avg) => {
+    let averageHeader = document.createElement('h4')
+    averageHeader.innerText = `Average Rating: ${avg}`
+    busiessInfoDiv.append(averageHeader)
+}
 
 //DISPLAY ALL THE REVIEWS
 displayReviews = (name, title, description, rating) => {
-    
+
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
     let reviewDescription = document.createElement('p')
