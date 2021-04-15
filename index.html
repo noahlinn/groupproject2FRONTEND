@@ -71,6 +71,24 @@
     </section>
     <section id="all-businesses-section" class="hidden">
         <h1>All Businesses</h1>
+        <form class = 'search-by-type'>
+            <label for="search-type ">Categories:</label>
+            <select id="search-type" name="category">
+                <option value="Food">Food</option>
+                <option value="Arts & Entertainment">Arts & Entertainment</option>
+                <option value="Health & Medical">Health & Medical</option>
+                <option value="Professional Services">Professional Services</option>
+                <option value="Pets">Pets</option>
+                <option value="Real Estate">Real Estate</option>
+                <option value="Hotels & Travel">Hotels & Travel</option>
+            </select>
+            <input type = 'submit' value = 'Search'>
+        </form>
+        <form class = 'search-by-name'>
+            <label for = 'business-name'>Find A Business:</label>
+            <input type = 'text' id='business-name'>
+            <input type = 'submit' value = 'Search'>
+        </form> 
     </section>
     <section id="create-business-section" class="hidden">
         <form class="create-form">
