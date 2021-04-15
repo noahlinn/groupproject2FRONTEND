@@ -93,13 +93,14 @@ signupFunction = async () => {
             password: password,
         })
         console.log(res.data)
-        let userId = res.data.newUser.id
+        let userId = res.data.userId
         localStorage.setItem('userId', userId)
-        let userName = res.data.newUser.name
+        let userName = res.data.userName
         localStorage.setItem('userName', userName)
         buttonController(homeScreen)
         loginStateButtons()
     } catch (error) {
+        console.log(error);
         alert('email already exists or invalid')
     }
 }
@@ -113,9 +114,9 @@ loginFunction = async () => {
             email: email,
             password: password
         })
-        let userId = res.data.user.id
+        let userId = res.data.userId
+        let userName = res.data.userName
         localStorage.setItem('userId', userId)
-        let userName = res.data.user.name
         localStorage.setItem('userName', userName)
         loginStateButtons()
         buttonController(homeScreen)
@@ -253,6 +254,7 @@ loginStateButtons = () => {
     removeHidden(logoutButton)
     removeHidden(listBusinessButton)
 }
+
 
 buttonController = (thing) => {
     hideSections()
