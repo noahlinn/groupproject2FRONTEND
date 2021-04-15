@@ -9,15 +9,18 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300&display=swap" rel="stylesheet">
 </head>
 
 <body>
+<div class = "entire-screen">
     <div id="header-div">
-        <h1>Welp</h1>
+        <h1 id = "title">Welp</h1>
         <button id="home-button">Home</button>
         <button id="all-businesses-button">All Businesses</button>
+        <button id="login-button">Login</button>
         <button id="signup-button">Signup</button>
-        <button id="login-button">login</button>
         <button id="list-businesses-button" class="hidden">List Your Business</button>
         <button id="logout-button" class="hidden">Logout</button>
     </div>
@@ -30,25 +33,40 @@
     <section id="signup-screen" class="hidden">
         <form class="signup-form">
             <h2 class="signup-header">Sign Up</h2>
-            <label for="signup-name">Name</label>
-            <input type="text" id="signup-name">
-            <label for="signup-email">Email</label>
-            <input type="text" id="signup-email">
-            <label for="signup-password">Password</label>
-            <input type="password" id="signup-password">
-            <input type="submit" value="Sign Up!">
+
+            <div class = "signup-box">
+            <label for="signup-name" class="signup-label">Name</label>
+            <input type="text" id="signup-name" class="signup-input">
+            </div>
+
+            <div class = "signup-box">
+            <label for="signup-email" class="signup-label">Email</label>
+            <input type="text" id="signup-email" class="signup-input">
+            </div>
+
+            <div class = "signup-box">
+            <label for="signup-password" class="signup-label">Password</label>
+            <input type="password" id="signup-password" class="signup-input">
+            </div>
+
+            <input type="submit" value="Sign Up!" id="signup-submit">
         </form>
     </section>
     <section id="login-screen" class="hidden">
         <form class="login-form">
             <h2 class="login-header">Login</h2>
-            <label for="login-email">Email</label>
-            <input type="text" id="login-email">
 
-            <label for="login-password">Password</label>
-            <input type="password" id="login-password">
+            <div class="login-box">
+            <label for="login-email" id="login-emailLabel" class="login-label">Email</label>
+            <input type="text" id="login-email" class="login-input">
+            </div>
 
-            <input type="submit" value="Log In!">
+            <div class="login-box">
+            <label for="login-password" id="login-passwordLabel" class="login-label">Password</label>
+            <input type="password" id="login-password" class="login-input">
+            </div>
+
+            <input type="submit" value="Log In!" id="login-submit">
         </form>
     </section>
     <section id="all-businesses-section" class="hidden">
@@ -76,6 +94,8 @@
             <input type="submit" value="Create Business!">
         </form>
     </section>
+
+
     <section id="single-business-section" class="hidden">
         <div class='business-info-div'></div>
         <div class='create-review-div hidden'>
@@ -101,6 +121,7 @@
             
         </div>
     </section>
+  </div>
 
 
     <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js "></script>
