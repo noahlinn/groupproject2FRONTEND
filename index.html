@@ -181,12 +181,42 @@
             </form>
         </div>
 
+
         <div class = 'all-reviews'> 
             <h2>Reviews:</h2>
             <div class = "display-reviews-div"></div>
         </div>
+
+
+
+        <div class = 'edit-review-section hidden'>
+
+            <form class="edit-review-form">
+                <h2 class="review-form-header">Update review</h2>
+                <label for="edit-review-title">Title</label>
+                <input type="text" id="edit-review-title" class="info-input">
+                <label for="edit-review-description">Description</label>
+                <textarea wrap="soft" id="edit-review-description"> </textarea>
+                <label for="edit-review-score ">Score</label>
+                <select id="edit-review-score" name="score">
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                    <option value=4>4</option>
+                    <option value=5>5</option>
+                </select>
+                <input type="submit" value="Update Review!" id="edit-review-submit">
+            </form>
+
+            <button class = 'cancel-review-edit'>Cancel</button>
+
+        </div>
+
+
+
+
     </section>
-  </div>
+</div>
 
 
     <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js "></script>
