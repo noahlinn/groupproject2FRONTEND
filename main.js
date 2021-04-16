@@ -85,8 +85,6 @@ cancel.addEventListener('click', (e) => {
 deletebutton.addEventListener('click', () => {
     deleteBusiness()
     buttonController(allBusinessesScreen)
-    displayAllBusinesses()
-
 })
 
 
@@ -114,6 +112,8 @@ editBusinessForm.addEventListener('submit', (e) => {
     e.preventDefault()
     editBusiness()
     buttonController(allBusinessesScreen)
+    addHidden(editBusinessForm)
+    removeHidden(reviewSection)
 })
 
 createReviewForm.addEventListener('submit', (e) => {
@@ -223,24 +223,24 @@ displayName = (eachName, id) => {
     allBusinessesScreen.append(nameDiv)
     nameDiv.append(name)
     name.addEventListener('click', () => {
-        console.log(id)
         clearResults(allReviewsDiv)
         getSingle(id)
-        getAllReviews(id)
+        // getAllReviews(id)
     })
 }
 
 //GETS INFO FOR ONE BUSINESS
 getSingle = async (id) => {
+    
     try {
         clearResults(busiessInfoDiv)
         buttonController(singleBusinessSection)
         let res = await axios.get(`http://localhost:3001/businesses/${id}`)
-        console.log(res.data.owner.email)
+        // console.log(res.data)
         localStorage.setItem('businessId', id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
             res.data.business.type, res.data.business.description, res.data.owner.name, res.data.owner.email)
-        getAllReviews()
+        getAllReviews(id)
     } catch (error) {
 
     }
@@ -249,7 +249,7 @@ getSingle = async (id) => {
 //DISPLAYS BUSINESS INFO ON SINGLE BUSINESS PAGE 
 diplayOneBusiness = (name, address, type, description, owner, email) => {
     reviewFormController()
-    console.log(email);
+    // console.log(email);
     if(localStorage.getItem('userEmail') === email ){
         ownerButtons.classList.remove('hidden')
         createReviewForm.classList.add('hidden')
@@ -301,25 +301,33 @@ getAllReviews = async (id) => {
         // clearResults(allReviewsDiv)
 
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
-        let ratingArr = []
-        res.data.reviews.forEach(i => {
-            let rating = i.review.rating
-            ratingArr.push(rating)
-        })
-        let avg = arr => arr.reduce((a, b) => a + b) / arr.length
-        averageRating = avg(ratingArr)
-        displayAverageRating(averageRating)
-        res.data.reviews.forEach(i => {
-            let userName = i.name
-            let reviewTitle = i.review.title
-            let reviewDescription = i.review.description
-            let reviewRating = i.review.rating
-            displayReviews(userName, reviewTitle, reviewDescription, reviewRating)
+        console.log(res.data)
+        let reviews = res.data.reviews
+        calculateAvg(reviews)
+        reviews.forEach(i => {
+            let userId = i.userId
+            let reviewTitle = i.title
+            let reviewDescription = i.description
+            let reviewRating = i.rating
+            console.log(userId, reviewTitle, reviewDescription, reviewRating)
+            displayReviews(userId, reviewTitle, reviewDescription, reviewRating)
         }) 
     } catch (error) {
 
     }
 }
+
+calculateAvg = (reviews) => {
+    let ratingArr = []
+    reviews.forEach(i => {
+        let rating = i.rating
+        ratingArr.push(rating)
+    })
+    let avg = arr => arr.reduce((a, b) => a + b) / arr.length
+    averageRating = avg(ratingArr)
+    displayAverageRating(averageRating)
+}
+
 displayAverageRating = (avg) => {
     busiessInfoDiv.removeChild(busiessInfoDiv.lastElementChild)
     let averageHeader = document.createElement('h4')
@@ -329,6 +337,8 @@ displayAverageRating = (avg) => {
 
 //DISPLAY ALL THE REVIEWS
 displayReviews = (name, title, description, rating) => {
+    console.log(name, title, description, rating)
+    let eachReviewDiv = document.createElement('div')
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
     let reviewDescription = document.createElement('p')
@@ -337,9 +347,8 @@ displayReviews = (name, title, description, rating) => {
     reviewTitle.innerText = title
     reviewDescription.innerText = description
     reviewRating.innerText = `${rating} out of 5`
-    allReviewsDiv.prepend(reviewTitle, reviewRating, createdBy, reviewDescription)
-
-
+    eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
+    allReviewsDiv.prepend(eachReviewDiv)
 }
 
 //CREATE BUSINESS 
@@ -359,7 +368,7 @@ createBusiness = async () => {
         })
         console.log(res.data)
         alert('New Business Created')
-       
+       clearResults(nameDiv)
         displayAllBusinesses()
     } catch (error) {
         error('Business failed to create')
@@ -391,6 +400,7 @@ deleteBusiness = async () => {
     try {
         let businessId = localStorage.getItem('businessId')
         const deleted = await axios.delete(`http://localhost:3001/businesses/${businessId}/delete`)
+        displayAllBusinesses()
         console.log(deleted);
     } catch (error) {
         console.log(error);
