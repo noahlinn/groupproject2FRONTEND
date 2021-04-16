@@ -17,12 +17,14 @@
 <div class = "entire-screen">
     <div id="header-div">
         <h1 id = "title">Welp</h1>
-        <button id="home-button">Home</button>
-        <button id="all-businesses-button">All Businesses</button>
-        <button id="login-button">Login</button>
-        <button id="signup-button">Signup</button>
-        <button id="list-businesses-button" class="hidden">List Your Business</button>
-        <button id="logout-button" class="hidden">Logout</button>
+        <div class = "nav"> 
+            <button id="home-button">Home</button>
+            <button id="all-businesses-button">All Businesses</button>
+            <button id="login-button">Login</button>
+            <button id="signup-button">Signup</button>
+            <button id="list-businesses-button" class="hidden">List Your Business</button>
+            <button id="logout-button" class="hidden">Logout</button>
+        </div>
     </div>
     <section id="home-screen">
 
@@ -74,7 +76,7 @@
         <form class = 'search-by-type'>
             <label for="search-type ">Categories:</label>
             <select id="search-type" name="category">
-                <option value="Food">Food</option>
+                <option value="Restaurants">Restaurants</option>
                 <option value="Arts & Entertainment">Arts & Entertainment</option>
                 <option value="Health & Medical">Health & Medical</option>
                 <option value="Professional Services">Professional Services</option>
@@ -101,7 +103,7 @@
             <input type="text" id="create-description">
             <label for="create-type ">Type</label>
             <select id="create-type" name="type">
-                <option value="Food">Food</option>
+                <option value="Restaurants">Restaurants</option>
                 <option value="Arts & Entertainment">Arts & Entertainment</option>
                 <option value="Health & Medical">Health & Medical</option>
                 <option value="Professional Services">Professional Services</option>
@@ -116,6 +118,34 @@
 
     <section id="single-business-section" class="hidden">
         <div class='business-info-div'></div>
+        <div class = 'edit-delete hidden'>
+            <button id = 'edit'>Edit</button>
+            <button id = 'delete'>Delete</button>
+        </div>
+            <form class="edit-business-form hidden">
+                <h2 class="edit-business-header">Edit Business</h2>
+                <label for="edit-business-name">Name</label>
+                <input type="text" id="edit-business-name">
+                <label for="edit-business-address">Address</label>
+                <input type="text" id="edit-business-address">
+                <label for="edit-business-description">Description</label>
+                <input type="text" id="edit-business-description">
+                <label for="edit-business-type ">Type</label>
+                <select id="edit-business-type" name="type">
+                    <option value="Food">Food</option>
+                    <option value="Arts & Entertainment">Arts & Entertainment</option>
+                    <option value="Health & Medical">Health & Medical</option>
+                    <option value="Professional Services">Professional Services</option>
+                    <option value="Pets">Pets</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Hotels & Travel">Hotels & Travel</option>
+                </select>
+                <input type="submit" value="Edit Business!">
+                <button class = 'cancel'>Cancel</button>
+            </form>
+            
+
+    
         <div class='create-review-div hidden'>
             <form class="add-review-form">
                 <h2 class="review-form-header">Leave a review</h2>
@@ -134,9 +164,9 @@
                 <input type="submit" value="Create Review!">
             </form>
         </div>
-        <h2>Reviews:</h2>
-        <div class = "display-reviews-div">
-            
+        <div class = 'all-reviews'> 
+            <h2>Reviews:</h2>
+            <div class = "display-reviews-div"></div>
         </div>
     </section>
   </div>

@@ -5,6 +5,10 @@ const loginButton = document.querySelector('#login-button')
 const allBusinessesButton = document.querySelector('#all-businesses-button')
 const homeButton = document.querySelector('#home-button')
 const listBusinessButton = document.querySelector('#list-businesses-button')
+const ownerButtons = document.querySelector('.edit-delete')
+const editButton = document.querySelector('#edit')
+const deletebutton = document.querySelector('#delete')
+const cancel = document.querySelector('.cancel')
 
 // FORMS
 const signupForm = document.querySelector('.signup-form')
@@ -15,6 +19,7 @@ const searchByTypeForm = document.querySelector('.search-by-type')
 const category = document.querySelector('#search-type')
 const searchByNameForm = document.querySelector('.search-by-name')
 const businessName = document.querySelector('#business-name')
+const editBusinessForm = document.querySelector('.edit-business-form')
 //SECTIONS
 const signupScreen = document.querySelector('#signup-screen')
 const loginScreen = document.querySelector('#login-screen')
@@ -27,6 +32,7 @@ let nameDiv = document.createElement('div')
 let busiessInfoDiv = document.querySelector('.business-info-div')
 let allReviewsDiv = document.querySelector('.display-reviews-div')
 let reviewFormDiv = document.querySelector('.create-review-div')
+const reviewSection = document.querySelector('.all-reviews')
 
 let businessId = null
 
@@ -62,6 +68,29 @@ logoutButton.addEventListener('click', () => [
 
 ])
 
+editButton.addEventListener('click', () => {
+    editBusinessForm.classList.remove('hidden')
+    reviewSection.classList.add('hidden')
+    ownerButtons.classList.add('hidden')
+
+})
+
+cancel.addEventListener('click', (e) => {
+    e.preventDefault()
+    editBusinessForm.classList.add('hidden')
+    reviewSection.classList.remove('hidden')
+    ownerButtons.classList.remove('hidden')
+})
+
+deletebutton.addEventListener('click', () => {
+    deleteBusiness()
+    buttonController(allBusinessesScreen)
+    displayAllBusinesses()
+
+})
+
+
+
 //FORM EVENT LISTENERS
 signupForm.addEventListener('submit', (e) => {
     console.log("signup")
@@ -81,6 +110,12 @@ createBusinessForm.addEventListener('submit', (e) => {
     buttonController(allBusinessesScreen)
 })
 
+editBusinessForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    editBusiness()
+    buttonController(allBusinessesScreen)
+})
+
 createReviewForm.addEventListener('submit', (e) => {
     e.preventDefault()
     let id = localStorage.getItem('businessId')
@@ -89,7 +124,6 @@ createReviewForm.addEventListener('submit', (e) => {
     getAllReviews(id)
 
 })
-
 
 searchByTypeForm.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -121,6 +155,8 @@ signupFunction = async () => {
         localStorage.setItem('userId', userId)
         let userName = res.data.userName
         localStorage.setItem('userName', userName)
+        let userEmail = res.data.userEmail
+        localStorage.setItem('userEmail', userEmail)
         buttonController(homeScreen)
         loginStateButtons()
     } catch (error) {
@@ -140,8 +176,10 @@ loginFunction = async () => {
         })
         let userId = res.data.userId
         let userName = res.data.userName
+        let userEmail = res.data.userEmail
         localStorage.setItem('userId', userId)
         localStorage.setItem('userName', userName)
+        localStorage.setItem('userEmail', userEmail)
         loginStateButtons()
         buttonController(homeScreen)
     } catch (error) {
@@ -168,7 +206,6 @@ displayBy = async (type) => {
     clearResults(nameDiv)
     try {
         const res = await axios.get(`http://localhost:3001/businesses/${type}`)
-        console.log(res.data);
         res.data.forEach(i => {
             let name = i.name
             let businessId = i.id
@@ -199,10 +236,10 @@ getSingle = async (id) => {
         clearResults(busiessInfoDiv)
         buttonController(singleBusinessSection)
         let res = await axios.get(`http://localhost:3001/businesses/${id}`)
-        console.log(res.data)
+        console.log(res.data.owner.email)
         localStorage.setItem('businessId', id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
-            res.data.business.type, res.data.business.description, res.data.owner.name)
+            res.data.business.type, res.data.business.description, res.data.owner.name, res.data.owner.email)
         getAllReviews()
     } catch (error) {
 
@@ -210,8 +247,17 @@ getSingle = async (id) => {
 }
 
 //DISPLAYS BUSINESS INFO ON SINGLE BUSINESS PAGE 
-diplayOneBusiness = (name, address, type, description, owner) => {
+diplayOneBusiness = (name, address, type, description, owner, email) => {
     reviewFormController()
+    console.log(email);
+    if(localStorage.getItem('userEmail') === email ){
+        ownerButtons.classList.remove('hidden')
+        createReviewForm.classList.add('hidden')
+    }else{
+        ownerButtons.classList.add('hidden')
+        createReviewForm.classList.remove('hidden')
+        editBusinessForm.classList.add('hidden')
+    }
     let nameHeader = document.createElement('h2')
     let displayAddress = document.createElement('p')
     let displayType = document.createElement('p')
@@ -283,7 +329,6 @@ displayAverageRating = (avg) => {
 
 //DISPLAY ALL THE REVIEWS
 displayReviews = (name, title, description, rating) => {
-
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
     let reviewDescription = document.createElement('p')
@@ -320,6 +365,38 @@ createBusiness = async () => {
         error('Business failed to create')
     }
 }
+
+//EDIT BUSINESS
+editBusiness = async () => {
+    const name = document.querySelector('#edit-business-name').value
+    const address = document.querySelector('#edit-business-address').value
+    const description = document.querySelector('#edit-business-description').value
+    const type = document.querySelector('#edit-business-type').value
+    try {
+        let businessId = localStorage.getItem('businessId')
+        let res = await axios.put(`http://localhost:3001/businesses/${businessId}/update`, {
+            name: name,
+            address: address,
+            description: description,
+            type: type
+        })
+        alert('Business Updated')
+        displayAllBusinesses()
+    } catch (error) {
+        error('Business failed to update')
+    }
+}
+
+deleteBusiness = async () => {
+    try {
+        let businessId = localStorage.getItem('businessId')
+        const deleted = await axios.delete(`http://localhost:3001/businesses/${businessId}/delete`)
+        console.log(deleted);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 //UTILITY FUNCTIONS
