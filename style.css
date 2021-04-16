@@ -95,6 +95,43 @@ body{
     text-decoration: underline ;
 }
 
+#list-businesses-button{
+
+    background-color: gold;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    /* display: inline-block; */
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+#list-businesses-button:hover{
+    background-color: rgb(184, 156, 0);
+    text-decoration: underline ; 
+}
+
+#logout-button{
+
+    background-color: whitesmoke;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    /* display: inline-block; */
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+#logout-button:hover{
+    background-color: rgb(139, 139, 139);
+    text-decoration: underline ; 
+}
+
+
 .login-form {
     display: flex;
     flex-direction: column;
@@ -196,7 +233,227 @@ body{
     background-color: rgb(189, 100, 189);
 }
 
+.create-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 700px;
+}
 
+.create-input{
+    margin-top: 5px;
+    border: 4px solid grey;
+    border-radius: 4px;
+    height: 30px;
+    font-size: 20px;
+    width: 400px;
+    padding: 2px;
+    background-color: lightgray;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.create-input:focus{
+    border: 4px solid gold;
+}
+
+#create-description{
+    margin-top: 5px;
+    border: 4px solid grey;
+    border-radius: 4px;
+    height: 100px;
+    font-size: 17px;
+    width: 400px;
+    /*padding: 2px;*/
+    background-color: lightgray;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    
+}
+
+#create-description:focus{
+    border: 4px solid gold;
+}
+
+#create-type{
+    margin-top: 5px;
+    width: 414px;
+    border: 4px solid grey;
+    border-radius: 4px;
+    background-color: lightgray;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+#create-type:focus{
+    border: 4px solid gold;
+}
+
+.create-box{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+
+.create-label{
+    font-size: 20px;
+}
+
+#create-submit{
+    width: 200px;
+    background-color: gold;
+    height: 30px;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+#create-submit:hover{
+background-color: rgb(177, 150, 0);
+}
+
+#all-businesses-section{
+   background-color: white;
+   width: 700px;
+}
+
+.businessNames{
+    border: solid 4px grey;
+    width: 400px;
+    border-radius: 30px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(228, 228, 228);
+    cursor: pointer;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.businessNames:hover{
+    color:white;
+    background-color: springgreen;
+    border: solid 4px black;
+}
+
+#all-businesses-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#single-business-section{
+    background-color: white;
+    width: 700px;
+}
+.business-info-div{
+    border: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.add-review-form{
+    border: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.show-info{
+    border: solid 3px black;
+    margin-top: -18px;
+    background-color: rgb(230, 230, 230);
+    color: black;
+    padding: 5px;
+    font-size: medium;
+    max-width: 300px;
+}
+
+.info-input{
+    border: 4px solid grey;
+    border-radius: 4px;
+    height: 30px;
+    font-size: 20px;
+    width: 250px;
+    padding: 2px;
+    background-color: lightgray;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.info-input:focus{
+    border: 4px solid springgreen;
+}
+
+#review-description{
+    border: 4px solid grey;
+    border-radius: 4px;
+    height: 100px;
+    font-size: 17px;
+    width: 250px;
+    padding: 2px;
+    background-color: lightgray;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+#review-description:focus{
+    border: 4px solid springgreen;
+}
+
+
+#review-score{
+    margin-top: 5px;
+    width: 100px;
+    border: 4px solid grey;
+    border-radius: 4px;
+    background-color: lightgray;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    margin-bottom: 10px;
+}
+
+#review-score:focus{
+    border: 4px solid springgreen;
+}
+
+
+#review-submit{
+    width: 150px;
+    background-color: springgreen;
+    height: 30px;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+#review-submit:hover{
+background-color: rgb(0, 187, 93);
+}
+
+
+
+.display-reviews-div{
+   
+}
+
+
+
+/*<input type="text" id="create-description">
+<input type="text" id="review-description">*/
 /*.signup-form{
     display: flex;
     flex-direction: column;
