@@ -253,7 +253,6 @@ getSingle = async (id) => {
 diplayOneBusiness = (name, address, type, description, owner, email) => {
    
     if(localStorage.getItem('userEmail') === email ){
-        
         ownerButtons.classList.remove('hidden')
         createReviewForm.classList.add('hidden')
         fillEditForm(name, address, type, description)
@@ -263,7 +262,6 @@ diplayOneBusiness = (name, address, type, description, owner, email) => {
         editBusinessForm.classList.add('hidden')
         reviewFormController()
     }
-    
     let nameHeader = document.createElement('h2')
     let displayAddress = document.createElement('p')
     displayAddress.classList.add("show-info")
@@ -313,7 +311,6 @@ getAllReviews = async (id) => {
         // clearResults(allReviewsDiv)
 
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
-        console.log(res.data)
         let reviews = res.data.reviews
         calculateAvg(reviews)
         reviews.forEach(i => {
@@ -321,7 +318,6 @@ getAllReviews = async (id) => {
             let reviewTitle = i.title
             let reviewDescription = i.description
             let reviewRating = i.rating
-            console.log(userId, reviewTitle, reviewDescription, reviewRating)
             displayReviews(userId, reviewTitle, reviewDescription, reviewRating)
         }) 
     } catch (error) {
@@ -352,6 +348,7 @@ displayAverageRating = (avg) => {
 displayReviews = async (name, title, description, rating) => {    
     let res = await axios.get(`http://localhost:3001/users/${name}`)
     let userName = res.data.userName
+    let userEmail = res.data.userEmail
     let eachReviewDiv = document.createElement('div')
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
@@ -364,7 +361,16 @@ displayReviews = async (name, title, description, rating) => {
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.prepend(eachReviewDiv)
-
+    if(userEmail === localStorage.getItem('userEmail')){
+        const buttonsDiv = document.createElement('div')
+        buttonsDiv.classList.add('edit-review-buttons')
+        const editReview = document.createElement('button')
+        const deleteReview = document.createElement('button')
+        editReview.innerHTML = 'Edit Review'
+        deleteReview.innerHTML = 'Delete Review'
+        eachReviewDiv.append(buttonsDiv)
+        buttonsDiv.append(editReview, deleteReview)
+    }
 }
 
 //CREATE BUSINESS 
