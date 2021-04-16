@@ -419,7 +419,6 @@ deleteBusiness = async () => {
 //UTILITY FUNCTIONS
 reviewFormController = () => {
     if (localStorage.getItem('userId')) {
-        
         removeHidden(reviewFormDiv)
         console.log('im logged in')
     }
