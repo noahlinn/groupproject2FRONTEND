@@ -20,6 +20,7 @@ const category = document.querySelector('#search-type')
 const searchByNameForm = document.querySelector('.search-by-name')
 const businessName = document.querySelector('#business-name')
 const editBusinessForm = document.querySelector('.edit-business-form')
+
 //SECTIONS
 const signupScreen = document.querySelector('#signup-screen')
 const loginScreen = document.querySelector('#login-screen')
@@ -337,14 +338,15 @@ displayAverageRating = (avg) => {
 }
 
 //DISPLAY ALL THE REVIEWS
-displayReviews = (name, title, description, rating) => {
-    console.log(name, title, description, rating)
+displayReviews = async (name, title, description, rating) => {    
+    let res = await axios.get(`http://localhost:3001/users/${name}`)
+    let userName = res.data.userName
     let eachReviewDiv = document.createElement('div')
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
     let reviewDescription = document.createElement('p')
     let reviewRating = document.createElement('p')
-    createdBy.innerText = `Left by ${name}`
+    createdBy.innerText = `Left by ${userName}`
     reviewTitle.innerText = title
     reviewDescription.innerText = description
     reviewRating.innerText = `${rating} out of 5`
