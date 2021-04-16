@@ -39,6 +39,7 @@ let allReviewsDiv = document.querySelector('.display-reviews-div')
 let reviewFormDiv = document.querySelector('.create-review-div')
 const reviewSection = document.querySelector('.all-reviews')
 let averageHeader = document.createElement('p')
+let helloUser = document.querySelector('.hello')
 let businessId = null
 
 
@@ -58,7 +59,7 @@ listBusinessButton.addEventListener("click", () => {
 })
 
 homeButton.addEventListener('click', () => {
-    buttonController(homeScreen)
+    buttonController(homeScreen)  
 })
 
 allBusinessesButton.addEventListener("click", () => {
@@ -70,7 +71,7 @@ allBusinessesButton.addEventListener("click", () => {
 logoutButton.addEventListener('click', () => [
     localStorage.clear(),
     logoutStateButtons(),
-    buttonController(homeScreen)
+    helloController()
 
 ])
 
@@ -169,8 +170,10 @@ signupFunction = async () => {
         localStorage.setItem('userName', userName)
         let userEmail = res.data.userEmail
         localStorage.setItem('userEmail', userEmail)
+        
         buttonController(homeScreen)
         loginStateButtons()
+        helloController()
     } catch (error) {
         console.log(error);
         alert('email already exists or invalid')
@@ -194,6 +197,7 @@ loginFunction = async () => {
         localStorage.setItem('userEmail', userEmail)
         loginStateButtons()
         buttonController(homeScreen)
+        helloController()
     } catch (error) {
         alert('login failed')
     }
@@ -320,6 +324,7 @@ getAllReviews = async (id) => {
         // clearResults(allReviewsDiv)
 
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
+        console.log(res)
         let reviews = res.data.reviews
         console.log(res.data);
         calculateAvg(reviews)
@@ -463,15 +468,28 @@ deleteBusiness = async () => {
 
 
 //UTILITY FUNCTIONS
+displayNameController = () => {
+    if (localStorage.getItem('userName')) {
+        let userName = localStorage.getItem('userName')
+        helloUser.innerHTML = `Hello ${userName}`
+    }
+}
+
+helloController = () => {
+    if (localStorage.getItem('userName')){
+        helloUser.innerHTML=`Welcome Back ${localStorage.getItem('userName')}!`
+    }else{
+        helloUser.innerHTML=``
+    }
+}
+
+
 reviewFormController = () => {
     if (localStorage.getItem('userId')) {
-        removeHidden(reviewFormDiv)
-        console.log('im logged in')
+        removeHidden(reviewFormDiv)    
     }
-    else {
-        
+    else { 
         addHidden(reviewFormDiv)
-        console.log('im logged out ')
     }
 }
 logoutStateButtons = () => {
@@ -528,4 +546,4 @@ fillEditForm = (name, address, type, description) => {
     document.querySelector('#edit-business-description').value = description
 }
 
-
+helloController()
