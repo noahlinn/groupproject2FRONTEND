@@ -333,12 +333,11 @@ calculateAvg = (reviews) => {
     })
     let avg = arr => arr.reduce((a, b) => a + b) / arr.length
     averageRating = avg(ratingArr)
-    displayAverageRating(averageRating)
+    displayAverageRating(Math.round(averageRating*10)/10)
 }
 
 displayAverageRating = (avg) => {
     busiessInfoDiv.removeChild(busiessInfoDiv.lastElementChild)
-    
     averageHeader.innerText = `Average Rating: ${avg}`
     busiessInfoDiv.append(averageHeader)
     
