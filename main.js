@@ -59,6 +59,7 @@ homeButton.addEventListener('click', () => {
 allBusinessesButton.addEventListener("click", () => {
     buttonController(allBusinessesScreen)
     displayAllBusinesses()
+    reviewSection.classList.remove('hidden')
 })
 
 logoutButton.addEventListener('click', () => [
@@ -112,8 +113,8 @@ editBusinessForm.addEventListener('submit', (e) => {
     e.preventDefault()
     editBusiness()
     buttonController(allBusinessesScreen)
-    addHidden(editBusinessForm)
-    removeHidden(reviewSection)
+    editBusinessForm.classList.add('hidden')
+    reviewSection.classList.remove('hidden')
 })
 
 createReviewForm.addEventListener('submit', (e) => {
@@ -236,7 +237,6 @@ getSingle = async (id) => {
         clearResults(busiessInfoDiv)
         buttonController(singleBusinessSection)
         let res = await axios.get(`http://localhost:3001/businesses/${id}`)
-        // console.log(res.data)
         localStorage.setItem('businessId', id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
             res.data.business.type, res.data.business.description, res.data.owner.name, res.data.owner.email)
@@ -249,10 +249,10 @@ getSingle = async (id) => {
 //DISPLAYS BUSINESS INFO ON SINGLE BUSINESS PAGE 
 diplayOneBusiness = (name, address, type, description, owner, email) => {
     reviewFormController()
-    // console.log(email);
     if(localStorage.getItem('userEmail') === email ){
         ownerButtons.classList.remove('hidden')
         createReviewForm.classList.add('hidden')
+        fillEditForm(name, address, type, description)
     }else{
         ownerButtons.classList.add('hidden')
         createReviewForm.classList.remove('hidden')
@@ -297,6 +297,7 @@ createReview = async (id) => {
 
 //GET ALL REVIEWS FOR EACH BUSINESS 
 getAllReviews = async (id) => {
+    console.log(id);
     try {
         // clearResults(allReviewsDiv)
 
@@ -401,7 +402,6 @@ deleteBusiness = async () => {
         let businessId = localStorage.getItem('businessId')
         const deleted = await axios.delete(`http://localhost:3001/businesses/${businessId}/delete`)
         displayAllBusinesses()
-        console.log(deleted);
     } catch (error) {
         console.log(error);
     }
@@ -466,5 +466,11 @@ else {
 
 }
 
+fillEditForm = (name, address, type, description) => {
+    document.querySelector('#edit-business-name').value = name
+    document.querySelector('#edit-business-address').value = address
+    document.querySelector('#edit-business-type').value = type
+    document.querySelector('#edit-business-description').value = description
+}
 
 
