@@ -8,7 +8,8 @@ const listBusinessButton = document.querySelector('#list-businesses-button')
 const ownerButtons = document.querySelector('.edit-delete')
 const editButton = document.querySelector('#edit')
 const deletebutton = document.querySelector('#delete')
-const cancel = document.querySelector('.cancel')
+const cancelBusinessEdit = document.querySelector('.cancel')
+const cancelReviewEdit = document.querySelector('.cancel-review-edit')
 
 // FORMS
 const signupForm = document.querySelector('.signup-form')
@@ -20,6 +21,7 @@ const category = document.querySelector('#search-type')
 const searchByNameForm = document.querySelector('.search-by-name')
 const businessName = document.querySelector('#business-name')
 const editBusinessForm = document.querySelector('.edit-business-form')
+const editReviewForm = document.querySelector('.edit-review-form')
 
 //SECTIONS
 const signupScreen = document.querySelector('#signup-screen')
@@ -30,6 +32,7 @@ const allBusinessesScreen = document.querySelector('#all-businesses-section')
 const allBusinessesDiv = document.querySelector('#all-businesses-div')
 const createBusinessSection = document.querySelector('#create-business-section')
 const singleBusinessSection = document.querySelector('#single-business-section')
+const editReviewSection = document.querySelector('.edit-review-section')
 let nameDiv = document.createElement('div')
 let busiessInfoDiv = document.querySelector('.business-info-div')
 let allReviewsDiv = document.querySelector('.display-reviews-div')
@@ -78,7 +81,7 @@ editButton.addEventListener('click', () => {
 
 })
 
-cancel.addEventListener('click', (e) => {
+cancelBusinessEdit.addEventListener('click', (e) => {
     e.preventDefault()
     editBusinessForm.classList.add('hidden')
     reviewSection.classList.remove('hidden')
@@ -88,6 +91,12 @@ cancel.addEventListener('click', (e) => {
 deletebutton.addEventListener('click', () => {
     deleteBusiness()
     buttonController(allBusinessesScreen)
+})
+
+
+cancelReviewEdit.addEventListener('click', () => {
+    editReviewSection.classList.add('hidden')
+    reviewSection.classList.remove('hidden')
 })
 
 
@@ -306,12 +315,13 @@ createReview = async (id) => {
 
 //GET ALL REVIEWS FOR EACH BUSINESS 
 getAllReviews = async (id) => {
-    console.log(id);
+    // console.log(id);
     try {
         // clearResults(allReviewsDiv)
 
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
         let reviews = res.data.reviews
+        console.log(res.data);
         calculateAvg(reviews)
         reviews.forEach(i => {
             let userId = i.userId
@@ -353,7 +363,6 @@ displayReviews = async (name, title, description, rating) => {
     let reviewTitle = document.createElement('h3')
     let reviewDescription = document.createElement('p')
     let reviewRating = document.createElement('p')
-
     createdBy.innerText = `Left by ${userName}`
     reviewTitle.innerText = title
     reviewDescription.innerText = description
@@ -361,7 +370,12 @@ displayReviews = async (name, title, description, rating) => {
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.prepend(eachReviewDiv)
     if(userEmail === localStorage.getItem('userEmail')){
-        const buttonsDiv = document.createElement('div')
+        createReviewerButtons(eachReviewDiv)
+    }
+}
+
+createReviewerButtons = (eachReviewDiv) => {
+    const buttonsDiv = document.createElement('div')
         buttonsDiv.classList.add('edit-review-buttons')
         const editReview = document.createElement('button')
         const deleteReview = document.createElement('button')
@@ -369,8 +383,27 @@ displayReviews = async (name, title, description, rating) => {
         deleteReview.innerHTML = 'Delete Review'
         eachReviewDiv.append(buttonsDiv)
         buttonsDiv.append(editReview, deleteReview)
-    }
+        handleReviewButtons(editReview,deleteReview)
 }
+
+handleReviewButtons = (edit,deleted) => {
+    edit.addEventListener('click', () => {
+        console.log('edit button');
+        reviewSection.classList.add('hidden')
+        editReviewSection.classList.remove('hidden')
+    })
+
+    deleted.addEventListener('click', async () => {
+        console.log('delete');
+        let userId = localStorage.getItem('userId')
+        let businessId = localStorage.getItem('businessId')
+        const deleteReview = await axios.delete(`http://localhost:3001/reviews/${userId}/${businessId}/delete`)
+        console.log(deleteReview);
+
+    })
+}
+
+
 
 //CREATE BUSINESS 
 createBusiness = async () => {
