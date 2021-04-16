@@ -27,6 +27,7 @@ const loginScreen = document.querySelector('#login-screen')
 const sections = document.querySelectorAll('section')
 const homeScreen = document.querySelector('#home-screen')
 const allBusinessesScreen = document.querySelector('#all-businesses-section')
+const allBusinessesDiv = document.querySelector('#all-businesses-div')
 const createBusinessSection = document.querySelector('#create-business-section')
 const singleBusinessSection = document.querySelector('#single-business-section')
 let nameDiv = document.createElement('div')
@@ -221,8 +222,9 @@ displayBy = async (type) => {
 //CREATES BUSINESS NAMES
 displayName = (eachName, id) => {
     let name = document.createElement('h3')
+    name.classList.add('businessNames')
     name.innerText = eachName
-    allBusinessesScreen.append(nameDiv)
+    allBusinessesDiv.append(nameDiv)
     nameDiv.append(name)
     name.addEventListener('click', () => {
         clearResults(allReviewsDiv)
@@ -264,13 +266,17 @@ diplayOneBusiness = (name, address, type, description, owner, email) => {
     
     let nameHeader = document.createElement('h2')
     let displayAddress = document.createElement('p')
+    displayAddress.classList.add("show-info")
     let displayType = document.createElement('p')
+    displayType.classList.add("show-info")
     let displayDescription = document.createElement('p')
+    displayDescription.classList.add("show-info")
     let createdBy = document.createElement('p')
+    createdBy.classList.add("show-info")
     nameHeader.innerText = name
-    displayAddress.innerText = address
-    displayType.innerText = type
-    displayDescription.innerText = description
+    displayAddress.innerText = `Address: ${address}`
+    displayType.innerText = `Type: ${type}`
+    displayDescription.innerText = `Description: ${description}`
     createdBy.innerText = `Listed by ${owner}`
     averageHeader.innerText = "Average review: "
     busiessInfoDiv.append(nameHeader, displayType, displayAddress,
@@ -351,12 +357,14 @@ displayReviews = async (name, title, description, rating) => {
     let reviewTitle = document.createElement('h3')
     let reviewDescription = document.createElement('p')
     let reviewRating = document.createElement('p')
+
     createdBy.innerText = `Left by ${userName}`
     reviewTitle.innerText = title
     reviewDescription.innerText = description
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.prepend(eachReviewDiv)
+
 }
 
 //CREATE BUSINESS 
