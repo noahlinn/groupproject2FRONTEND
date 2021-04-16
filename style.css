@@ -79,6 +79,8 @@ body{
     text-decoration: underline;
 }
 
+
+
 #signup-button {
     background-color: violet;
     border: none;
@@ -463,3 +465,17 @@ background-color: rgb(0, 187, 93);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+.hidden{
+    display: none;
+}
