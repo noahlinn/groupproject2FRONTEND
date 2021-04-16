@@ -34,7 +34,7 @@ let busiessInfoDiv = document.querySelector('.business-info-div')
 let allReviewsDiv = document.querySelector('.display-reviews-div')
 let reviewFormDiv = document.querySelector('.create-review-div')
 const reviewSection = document.querySelector('.all-reviews')
-
+let averageHeader = document.createElement('p')
 let businessId = null
 
 
@@ -249,8 +249,9 @@ getSingle = async (id) => {
 
 //DISPLAYS BUSINESS INFO ON SINGLE BUSINESS PAGE 
 diplayOneBusiness = (name, address, type, description, owner, email) => {
-    reviewFormController()
+   
     if(localStorage.getItem('userEmail') === email ){
+        
         ownerButtons.classList.remove('hidden')
         createReviewForm.classList.add('hidden')
         fillEditForm(name, address, type, description)
@@ -258,7 +259,9 @@ diplayOneBusiness = (name, address, type, description, owner, email) => {
         ownerButtons.classList.add('hidden')
         createReviewForm.classList.remove('hidden')
         editBusinessForm.classList.add('hidden')
+        reviewFormController()
     }
+    
     let nameHeader = document.createElement('h2')
     let displayAddress = document.createElement('p')
     let displayType = document.createElement('p')
@@ -269,8 +272,9 @@ diplayOneBusiness = (name, address, type, description, owner, email) => {
     displayType.innerText = type
     displayDescription.innerText = description
     createdBy.innerText = `Listed by ${owner}`
+    averageHeader.innerText = "Average review: "
     busiessInfoDiv.append(nameHeader, displayType, displayAddress,
-        displayDescription, createdBy)
+        displayDescription, createdBy,averageHeader)
 
 }
 
@@ -332,9 +336,10 @@ calculateAvg = (reviews) => {
 
 displayAverageRating = (avg) => {
     busiessInfoDiv.removeChild(busiessInfoDiv.lastElementChild)
-    let averageHeader = document.createElement('h4')
+    
     averageHeader.innerText = `Average Rating: ${avg}`
     busiessInfoDiv.append(averageHeader)
+    
 }
 
 //DISPLAY ALL THE REVIEWS
@@ -414,13 +419,16 @@ deleteBusiness = async () => {
 //UTILITY FUNCTIONS
 reviewFormController = () => {
     if (localStorage.getItem('userId')) {
+        
         removeHidden(reviewFormDiv)
+        console.log('im logged in')
     }
     else {
+        
         addHidden(reviewFormDiv)
+        console.log('im logged out ')
     }
 }
-
 logoutStateButtons = () => {
     removeHidden(loginButton)
     removeHidden(signupButton)
