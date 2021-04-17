@@ -437,9 +437,10 @@ editReview = async () => {
             score: score
         })
         alert('Review Updated')
+        editReviewSection.classList.add('hidden')
+        reviewSection.classList.remove('hidden')
+        reviewFormDiv.classList.add('hidden')
         getAllReviews(businessId)
-    editReviewSection.classList.add('hidden')
-    reviewSection.classList.remove('hidden')
     } catch (error) {
         error('Review failed to update')
     }
@@ -588,20 +589,9 @@ fillEditReviewForm = (title,description,rating) => {
     document.querySelector('#edit-review-score').value = rating
 }
 
-clearAddReviewForm = () => {
-    document.querySelector('#review-score').value = ""
-    document.querySelector('#review-title').value = ""
-    document.querySelector('#review-description').value = ""
-}
-
-
-clearAddReviewForm = () => {
-    document.querySelector('#review-score').value = ""
-    document.querySelector('#review-title').value = ""
-    document.querySelector('#review-description').value = ""
-}
 
 helloController()
+
 
 clearAddReviewForm = () => {
     document.querySelector('#review-score').value = ""
