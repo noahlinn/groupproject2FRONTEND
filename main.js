@@ -391,6 +391,7 @@ displayReviews = async (name, title, description, rating) => {
     reviewTitle.innerText = `Title: ${title}`
     reviewDescription.innerText = `Description: ${description}`
     reviewRating.innerText = `${rating} out of 5`
+    console.log(title)
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.append(eachReviewDiv)
     fillEditReviewForm(userEmail, title, description, rating)
