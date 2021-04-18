@@ -12,10 +12,10 @@ app.get('/', (req, res) => {
   res.sendFile(filepath)
 })
 
-app.get('/main.js', (req, res) => {
-    const filepath = path.join(__dirname, 'main.js')
-    res.sendFile(filepath)
-  })
+// app.get('/main.js', (req, res) => {
+//     const filepath = path.join(__dirname, 'main.js')
+//     res.sendFile(filepath)
+//   })
 app.get('/main.js', async (req, res) => {
   const filepath = path.join(__dirname, 'main.js')
 

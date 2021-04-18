@@ -45,7 +45,7 @@ let businessId = null
 
 const thanksScreen = document.querySelector('.thanks-screen')
 let allUserEmails = []
-
+const localHost = "http://localhost:3001"
 
 //BUTTON EVENT LISTENERS
 signupButton.addEventListener("click", () => {
@@ -169,7 +169,7 @@ signupFunction = async () => {
     const email = document.querySelector('#signup-email').value
     const password = document.querySelector('#signup-password').value
     try {
-        let res = await axios.post('http://localhost:3001/users', {
+        let res = await axios.post(`${localHost}/users`, {
             name: name,
             email: email,
             password: password,
@@ -195,7 +195,7 @@ loginFunction = async () => {
     const email = document.querySelector('#login-email').value
     const password = document.querySelector('#login-password').value
     try {
-        let res = await axios.post('http://localhost:3001/users/login', {
+        let res = await axios.post(`${localHost}/users/login`, {
             email: email,
             password: password
         })
@@ -217,7 +217,7 @@ loginFunction = async () => {
 displayAllBusinesses = async () => {
     clearResults(nameDiv)
     try {
-        let res = await axios.get(`http://localhost:3001/businesses`)
+        let res = await axios.get(`${localHost}/businesses`)
         res.data.forEach(i => {
             let name = i.name
             let businessId = i.id
@@ -231,7 +231,7 @@ displayAllBusinesses = async () => {
 displayBy = async (type) => {
     clearResults(nameDiv)
     try {
-        const res = await axios.get(`http://localhost:3001/businesses/${type}`)
+        const res = await axios.get(`${localHost}/businesses/${type}`)
         res.data.forEach(i => {
             let name = i.name
             let businessId = i.id
@@ -263,7 +263,7 @@ getSingle = async (id) => {
     try {
         clearResults(busiessInfoDiv)
         buttonController(singleBusinessSection)
-        let res = await axios.get(`http://localhost:3001/businesses/${id}`)
+        let res = await axios.get(`${localHost}/businesses/${id}`)
         localStorage.setItem('businessId', id)
         getAllReviews(id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
@@ -318,7 +318,7 @@ createReview = async (id) => {
     const title = document.querySelector('#review-title').value
     const description = document.querySelector('#review-description').value
     try {
-        let res = await axios.post('http://localhost:3001/reviews', {
+        let res = await axios.post(`${localHost}/reviews`, {
             userId: userId,
             businessId: businessId,
             rating: rating,
@@ -337,7 +337,7 @@ createReview = async (id) => {
 getAllReviews = async (id) => {
     try {
         clearAddReviewForm()
-        let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
+        let res = await axios.get(`${localHost}/businesses/${id}/reviews`)
         let reviews = res.data.reviews
         calculateAvg(reviews)
         reviews.forEach(i => {
@@ -377,7 +377,7 @@ displayAverageRating = (avg) => {
 displayReviews = async (name, title, description, rating) => {
     // clearResults(allReviewsDiv)
     
-    let res = await axios.get(`http://localhost:3001/users/${name}`)
+    let res = await axios.get(`${localHost}/users/${name}`)
     let userName = res.data.userName
     let userEmail = res.data.userEmail
     allUserEmails.push(userEmail)
@@ -392,7 +392,7 @@ displayReviews = async (name, title, description, rating) => {
     reviewDescription.innerText = `Description: ${description}`
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
-    allReviewsDiv.append(eachReviewDiv)
+    allReviewsDiv.prepend(eachReviewDiv)
     fillEditReviewForm(userEmail, title, description, rating)
     testFunction(title, description, rating)
     
@@ -437,7 +437,7 @@ handleReviewButtons = (edit, deleted) => {
     deleted.addEventListener('click', async () => {
         let userId = localStorage.getItem('userId')
         let businessId = localStorage.getItem('businessId')
-        const deleteReview = await axios.delete(`http://localhost:3001/reviews/${userId}/${businessId}/delete`)
+        const deleteReview = await axios.delete(`${localHost}/reviews/${userId}/${businessId}/delete`)
         let id = localStorage.getItem('businessId')
         deleteReviewActions(id)
     })
@@ -450,7 +450,7 @@ editReview = async () => {
     try {
         let userId = localStorage.getItem('userId')
         let businessId = localStorage.getItem('businessId')
-        let res = await axios.put(`http://localhost:3001/reviews/${userId}/${businessId}/update`, {
+        let res = await axios.put(`${localHost}/reviews/${userId}/${businessId}/update`, {
             title: title,
             description: description,
             rating: score
@@ -474,7 +474,7 @@ createBusiness = async () => {
     const type = document.querySelector('#create-type').value
     try {
         let userId = localStorage.getItem('userId')
-        let res = await axios.post('http://localhost:3001/businesses', {
+        let res = await axios.post(`${localHost}/businesses`, {
             userId: userId,
             name: name,
             address: address,
@@ -497,7 +497,7 @@ editBusiness = async () => {
     const type = document.querySelector('#edit-business-type').value
     try {
         let businessId = localStorage.getItem('businessId')
-        let res = await axios.put(`http://localhost:3001/businesses/${businessId}/update`, {
+        let res = await axios.put(`${localHost}/businesses/${businessId}/update`, {
             name: name,
             address: address,
             description: description,
@@ -513,7 +513,7 @@ editBusiness = async () => {
 deleteBusiness = async () => {
     try {
         let businessId = localStorage.getItem('businessId')
-        const deleted = await axios.delete(`http://localhost:3001/businesses/${businessId}/delete`)
+        const deleted = await axios.delete(`${localHost}/businesses/${businessId}/delete`)
         displayAllBusinesses()
     } catch (error) {
         console.log(error);
