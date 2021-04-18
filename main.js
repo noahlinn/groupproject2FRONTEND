@@ -349,7 +349,7 @@ getAllReviews = async (id) => {
             displayReviews(userId, reviewTitle, reviewDescription, reviewRating)
         })
     } catch (error) {
-        alert("Could not get reviews")
+        alert("No reviews found")
     }
 }
 
@@ -392,7 +392,7 @@ displayReviews = async (name, title, description, rating) => {
     reviewDescription.innerText = `Description: ${description}`
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
-    allReviewsDiv.prepend(eachReviewDiv)
+    allReviewsDiv.append(eachReviewDiv)
     fillEditReviewForm(userEmail, title, description, rating)
     testFunction(title, description, rating)
     
