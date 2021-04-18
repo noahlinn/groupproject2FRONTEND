@@ -43,7 +43,7 @@ let helloUser = document.querySelector('.hello')
 let businessId = null
 
 const thanksScreen = document.querySelector('.thanks-screen')
-
+let allUserEmails = []
 
 
 //BUTTON EVENT LISTENERS
@@ -68,6 +68,7 @@ allBusinessesButton.addEventListener("click", () => {
     displayAllBusinesses()
     reviewFormController()
     // reviewSection.classList.remove('hidden')
+
 })
 
 logoutButton.addEventListener('click', () => [
@@ -93,6 +94,7 @@ cancelBusinessEdit.addEventListener('click', (e) => {
 
 deletebutton.addEventListener('click', () => {
     deleteBusiness()
+    removeHidden(reviewFormDiv, createReviewForm)
     buttonController(allBusinessesScreen)
 })
 
@@ -245,7 +247,8 @@ displayName = (eachName, id) => {
     allBusinessesDiv.append(nameDiv)
     nameDiv.append(name)
     name.addEventListener('click', () => {
-        addHidden(thanksScreen)
+        // addHidden(thanksScreen)
+        allUserEmails = []
         getSingle(id)
         clearResults(allReviewsDiv)
     })
@@ -274,7 +277,8 @@ diplayOneBusiness = (name, address, type, description, owner, email) => {
     if (localStorage.getItem('userEmail') === email) {
         console.log(email)
         removeHidden(ownerButtons)
-        addHidden(createReviewForm, reviewFormDiv)
+        addHidden(createReviewForm)
+        addHidden(thanksScreen)
         fillEditDeleteForm(name, address, type, description)
         console.log("HIDE REVIEW FORM YOU OWN IT")
     }
@@ -333,6 +337,7 @@ getAllReviews = async (id) => {
         clearAddReviewForm()
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
         let reviews = res.data.reviews
+ 
         calculateAvg(reviews)
         reviews.forEach(i => {
             let userId = i.userId
@@ -346,6 +351,7 @@ getAllReviews = async (id) => {
 
     }
 }
+
 
 
 calculateAvg = (reviews) => {
@@ -369,9 +375,25 @@ displayAverageRating = (avg) => {
 //DISPLAY ALL THE REVIEWS
 displayReviews = async (name, title, description, rating) => {
     // clearResults(allReviewsDiv)
+    
     let res = await axios.get(`http://localhost:3001/users/${name}`)
     let userName = res.data.userName
     let userEmail = res.data.userEmail
+    allUserEmails.push(userEmail)
+    console.log(allUserEmails)
+    // if (userEmail === localStorage.getItem('userEmail')) {
+    //     createReviewerButtons()
+    //     fillEditReviewForm(title, description, rating)
+    //     reviewFormDiv.classList.add('hidden')
+    //     thanksScreen.classList.remove('hidden')
+    //     console.log(userEmail)
+    //     console.log("DISPLAY THANKS SCREEN")
+    // } else {
+    //     // reviewFormDiv.classList.remove('hidden')
+    //     thanksScreen.classList.add('hidden')
+    //     reviewFormController()
+    //     console.log("HIDE THANKS")
+    // }
     let eachReviewDiv = document.createElement('div')
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
@@ -383,9 +405,26 @@ displayReviews = async (name, title, description, rating) => {
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.prepend(eachReviewDiv)
-    createEditReviewButtons(userEmail, title, description, rating)
+    // createEditReviewButtons(userEmail, title, description, rating)
+    testFunction(title, description, rating)
 
 }
+
+testFunction = (title, description, rating) => {
+    if(allUserEmails.includes(localStorage.getItem('userEmail'))){
+        createReviewerButtons()
+        fillEditReviewForm(title, description, rating)
+        reviewFormDiv.classList.add('hidden')
+        thanksScreen.classList.remove('hidden')
+        console.log("DISPLAY THANKS SCREEN")
+    }
+    else{
+        thanksScreen.classList.add('hidden')
+        reviewFormController()
+        console.log("HIDE THANKS")
+    }
+}
+
 
 createReviewerButtons = () => {
     clearResults(editReviewButtons)
@@ -517,25 +556,28 @@ reviewFormController = () => {
 
 deleteReviewActions = (id) => {
     clearResults(allReviewsDiv)
-    getAllReviews(id)
-    removeHidden(reviewFormDiv)
+   
+    removeHidden(reviewFormDiv, createReviewForm)
     addHidden(thanksScreen)
+    getAllReviews(id)
 }
 
 
-createEditReviewButtons = (userEmail, title, description, rating) => {
-    if (userEmail === localStorage.getItem('userEmail')) {
-        createReviewerButtons()
-        fillEditReviewForm(title, description, rating)
-        reviewFormDiv.classList.add('hidden')
-        thanksScreen.classList.remove('hidden')
-    } else {
-        // reviewFormDiv.classList.remove('hidden')
-        thanksScreen.classList.add('hidden')
-        reviewFormController()
-
-    }
-}
+// createEditReviewButtons = (x, title, description, rating) => {
+//     if (x === localStorage.getItem('userEmail')) {
+//         createReviewerButtons()
+//         fillEditReviewForm(title, description, rating)
+//         reviewFormDiv.classList.add('hidden')
+//         thanksScreen.classList.remove('hidden')
+//         console.log(x)
+//         console.log("DISPLAY THANKS SCREEN")
+//     } else {
+//         // reviewFormDiv.classList.remove('hidden')
+//         thanksScreen.classList.add('hidden')
+//         reviewFormController()
+//         console.log("HIDE THANKS")
+//     }
+// }
 
 
 logoutStateButtons = () => {
