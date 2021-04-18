@@ -563,23 +563,6 @@ deleteReviewActions = (id) => {
 }
 
 
-// createEditReviewButtons = (x, title, description, rating) => {
-//     if (x === localStorage.getItem('userEmail')) {
-//         createReviewerButtons()
-//         fillEditReviewForm(title, description, rating)
-//         reviewFormDiv.classList.add('hidden')
-//         thanksScreen.classList.remove('hidden')
-//         console.log(x)
-//         console.log("DISPLAY THANKS SCREEN")
-//     } else {
-//         // reviewFormDiv.classList.remove('hidden')
-//         thanksScreen.classList.add('hidden')
-//         reviewFormController()
-//         console.log("HIDE THANKS")
-//     }
-// }
-
-
 logoutStateButtons = () => {
     removeHidden(loginButton)
     removeHidden(signupButton)
