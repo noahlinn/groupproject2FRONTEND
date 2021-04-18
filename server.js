@@ -23,7 +23,7 @@ app.get('/main.js', async (req, res) => {
       await replaceInFile({
           files: filepath,
           from: 'http://localhost:3001',
-          to: 'https://welpfrontend.herokuapp.com'
+          to: 'https://welpbackend.herokuapp.com'
       })
   }
   res.sendFile(filepath)
