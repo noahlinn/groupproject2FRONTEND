@@ -116,6 +116,7 @@ signupForm.addEventListener('submit', (e) => {
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault()
     loginFunction()
+    loginForm.reset()
 })
 
 createBusinessForm.addEventListener('submit', (e) => {

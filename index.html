@@ -38,17 +38,17 @@
 
             <div class = "signup-box">
             <label for="signup-name" class="signup-label">Name</label>
-            <input type="text" id="signup-name" class="signup-input">
+            <input type="text" id="signup-name" class="signup-input" required>
             </div>
 
             <div class = "signup-box">
             <label for="signup-email" class="signup-label">Email</label>
-            <input type="text" id="signup-email" class="signup-input">
+            <input type="text" id="signup-email" class="signup-input" required>
             </div>
 
             <div class = "signup-box">
             <label for="signup-password" class="signup-label">Password</label>
-            <input type="password" id="signup-password" class="signup-input">
+            <input type="password" id="signup-password" class="signup-input" required>
             </div>
 
             <input type="submit" value="Sign Up!" id="signup-submit">
@@ -60,12 +60,12 @@
 
             <div class="login-box">
             <label for="login-email" id="login-emailLabel" class="login-label">Email</label>
-            <input type="text" id="login-email" class="login-input">
+            <input type="text" id="login-email" class="login-input" required>
             </div>
 
             <div class="login-box">
             <label for="login-password" id="login-passwordLabel" class="login-label">Password</label>
-            <input type="password" id="login-password" class="login-input">
+            <input type="password" id="login-password" class="login-input" required>
             </div>
 
             <input type="submit" value="Log In!" id="login-submit">
@@ -104,12 +104,12 @@
 
             <div class = "create-box">
             <label for="create-name" class="create-label">Name</label>
-            <input type="text" id="create-name" class="create-input">
+            <input type="text" id="create-name" class="create-input" required>
             </div>
 
             <div class = "create-box">
             <label for="create-address" class="create-label">Address</label>
-            <input type="text" id="create-address" class="create-input">
+            <input type="text" id="create-address" class="create-input" required>
             </div>
 
             <div class = "create-box">
@@ -143,11 +143,11 @@
             <form class="edit-business-form hidden">
                 <h2 class="edit-business-header">Edit Business</h2>
                 <label for="edit-business-name">Name</label>
-                <input type="text" id="edit-business-name">
+                <input type="text" id="edit-business-name" required>
                 <label for="edit-business-address">Address</label>
-                <input type="text" id="edit-business-address">
+                <input type="text" id="edit-business-address" required>
                 <label for="edit-business-description">Description</label>
-                <input type="text" id="edit-business-description">
+                <input type="text" id="edit-business-description" required>
                 <label for="edit-business-type ">Type</label>
                 <select id="edit-business-type" name="type">
                     <option value="Restaurants">Restaurants</option>
@@ -166,9 +166,9 @@
             <form class="add-review-form">
                 <h2 class="review-form-header">Leave a review</h2>
                 <label for="review-title">Title</label>
-                <input type="text" id="review-title" class="info-input">
+                <input type="text" id="review-title" class="info-input" required>
                 <label for="review-description">Description</label>
-                <textarea wrap="soft" id="review-description"> </textarea>
+                <textarea wrap="soft" id="review-description" required> </textarea>
                 <label for="review-score ">Score</label>
                 <select id="review-score" name="score">
                     <option value=1>1</option>
