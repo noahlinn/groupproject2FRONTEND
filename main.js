@@ -174,7 +174,6 @@ signupFunction = async () => {
             email: email,
             password: password,
         })
-        // console.log(res.data)
         let userId = res.data.userId
         localStorage.setItem('userId', userId)
         let userName = res.data.userName
@@ -279,12 +278,10 @@ getSingle = async (id) => {
 //DISPLAYS BUSINESS INFO ON SINGLE BUSINESS PAGE 
 diplayOneBusiness = (name, address, type, description, owner, email) => {
     if (localStorage.getItem('userEmail') === email) {
-        console.log(email)
         removeHidden(ownerButtons)
         addHidden(createReviewForm)
         addHidden(thanksScreen)
         fillEditDeleteForm(name, address, type, description)
-        console.log("HIDE REVIEW FORM YOU OWN IT")
     }
     else {
         ownerButtons.classList.add('hidden')
@@ -342,7 +339,6 @@ getAllReviews = async (id) => {
         clearAddReviewForm()
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
         let reviews = res.data.reviews
-        console.log(reviews)
         calculateAvg(reviews)
         reviews.forEach(i => {
             let userId = i.userId
@@ -353,7 +349,7 @@ getAllReviews = async (id) => {
             displayReviews(userId, reviewTitle, reviewDescription, reviewRating)
         })
     } catch (error) {
-
+        alert("Could not get reviews")
     }
 }
 
@@ -385,7 +381,6 @@ displayReviews = async (name, title, description, rating) => {
     let userName = res.data.userName
     let userEmail = res.data.userEmail
     allUserEmails.push(userEmail)
-    console.log(allUserEmails)
     let eachReviewDiv = document.createElement('div')
     eachReviewDiv.classList.add("each-review")
     let createdBy = document.createElement('p')
@@ -398,8 +393,6 @@ displayReviews = async (name, title, description, rating) => {
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.append(eachReviewDiv)
-    console.log(title, description, rating)
-    // createEditReviewButtons(userEmail, title, description, rating)
     fillEditReviewForm(userEmail, title, description, rating)
     testFunction(title, description, rating)
     
@@ -409,8 +402,6 @@ displayReviews = async (name, title, description, rating) => {
 testFunction = (title, description, rating) => {
     if(allUserEmails.includes(localStorage.getItem('userEmail'))){
         createReviewerButtons()
-        // console.log(title, description, rating)
-        // fillEditReviewForm(title, description, rating)
         reviewFormDiv.classList.add('hidden')
         thanksScreen.classList.remove('hidden')
     }
@@ -447,7 +438,6 @@ handleReviewButtons = (edit, deleted) => {
         let userId = localStorage.getItem('userId')
         let businessId = localStorage.getItem('businessId')
         const deleteReview = await axios.delete(`http://localhost:3001/reviews/${userId}/${businessId}/delete`)
-        console.log(deleteReview);
         let id = localStorage.getItem('businessId')
         deleteReviewActions(id)
     })
