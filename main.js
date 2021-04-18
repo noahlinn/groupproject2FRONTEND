@@ -36,6 +36,7 @@ const editReviewSection = document.querySelector('.edit-review-section')
 let nameDiv = document.createElement('div')
 let busiessInfoDiv = document.querySelector('.business-info-div')
 let allReviewsDiv = document.querySelector('.display-reviews-div')
+allReviewsDiv.classList.add("all-reviews-display")
 let reviewFormDiv = document.querySelector('.create-review-div')
 const reviewSection = document.querySelector('.all-reviews')
 let averageHeader = document.createElement('p')
@@ -373,13 +374,14 @@ displayReviews = async (name, title, description, rating) => {
     let userName = res.data.userName
     let userEmail = res.data.userEmail
     let eachReviewDiv = document.createElement('div')
+    eachReviewDiv.classList.add("each-review")
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
     let reviewDescription = document.createElement('p')
     let reviewRating = document.createElement('p')
-    createdBy.innerText = `Left by ${userName}`
-    reviewTitle.innerText = title
-    reviewDescription.innerText = description
+    createdBy.innerText = `Left by: ${userName}`
+    reviewTitle.innerText = `Title: ${title}`
+    reviewDescription.innerText = `Description: ${description}`
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.prepend(eachReviewDiv)
@@ -399,7 +401,9 @@ createReviewerButtons = () => {
     const buttonsDiv = document.createElement('div')
     buttonsDiv.classList.add('edit-review-buttons')
     const editReview = document.createElement('button')
+    editReview.classList.add("search-edit-delete-submit")
     const deleteReview = document.createElement('button')
+    deleteReview.classList.add("search-edit-delete-submit")
     editReview.innerHTML = 'Update My Review'
     deleteReview.innerHTML = 'Delete My Review'
     editReviewButtons.append(buttonsDiv)

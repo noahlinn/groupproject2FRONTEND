@@ -30,6 +30,7 @@
 
         <h2>Home Page</h2>
         <h3 class = 'hello'></h3>
+        <h4>Feel free to checkout all of your reviews and businesses through the top links, enjoy!</h4>
     </section>
 
     <section id="signup-screen" class="hidden">
@@ -79,7 +80,7 @@
 
         <form class = 'search-by-type'>
             <label for="search-type ">Categories:</label>
-            <select id="search-type" name="category">
+            <select id="search-type" name="category" class="location-box">
                 <option value="Restaurants">Restaurants</option>
                 <option value="Arts & Entertainment">Arts & Entertainment</option>
                 <option value="Health & Medical">Health & Medical</option>
@@ -88,12 +89,12 @@
                 <option value="Real Estate">Real Estate</option>
                 <option value="Hotels & Travel">Hotels & Travel</option>
             </select>
-            <input type = 'submit' value = 'Search'>
+            <input type = 'submit' value = 'Search' class="search-edit-delete-submit">
         </form>
         <form class = 'search-by-name'>
             <label for = 'business-name'>Find A Business:</label>
-            <input type = 'text' id='business-name'>
-            <input type = 'submit' value = 'Search'>
+            <input type = 'text' id='business-name' class="location-box">
+            <input type = 'submit' value = 'Search' class="search-edit-delete-submit">
         </form> 
       </div>
     </section>
@@ -137,17 +138,17 @@
     <section id="single-business-section" class="hidden">
         <div class='business-info-div'></div>
         <div class = 'edit-delete hidden'>
-            <button id = 'edit'>Edit</button>
-            <button id = 'delete'>Delete</button>
+            <button id = 'edit' class="search-edit-delete-submit">Edit</button>
+            <button id = 'delete' class="search-edit-delete-submit">Delete</button>
         </div>
             <form class="edit-business-form hidden">
                 <h2 class="edit-business-header">Edit Business</h2>
                 <label for="edit-business-name">Name</label>
-                <input type="text" id="edit-business-name">
+                <input type="text" id="edit-business-name" class="edit-input">
                 <label for="edit-business-address">Address</label>
-                <input type="text" id="edit-business-address">
+                <input type="text" id="edit-business-address" class="edit-input">
                 <label for="edit-business-description">Description</label>
-                <input type="text" id="edit-business-description">
+                <textarea wrap="soft" id="edit-business-description"></textarea>
                 <label for="edit-business-type ">Type</label>
                 <select id="edit-business-type" name="type">
                     <option value="Restaurants">Restaurants</option>
@@ -158,7 +159,7 @@
                     <option value="Real Estate">Real Estate</option>
                     <option value="Hotels & Travel">Hotels & Travel</option>
                 </select>
-                <input type="submit" value="Edit Business!">
+                <input type="submit" value="Edit Business!" class="search-edit-delete-submit">
                 <button class = 'cancel'>Cancel</button>
             </form>
     
@@ -183,7 +184,7 @@
 
         <div class = 'thanks-screen hidden'>
             <h2>Thank You for Reviewing our Business!</h2>
-            <div class = editReviewButtons></div>
+            <div class = "editReviewButtons" class="search-edit-delete-submit"></div>
         </div>
 
 
@@ -211,7 +212,7 @@
                     <option value=4>4</option>
                     <option value=5>5</option>
                 </select>
-                <input type="submit" value="Update Review!" id="edit-review-submit">
+                <input type="submit" value="Update Review!" id="edit-review-submit" class="search-edit-delete-submit">
             </form>
 
             <button class = 'cancel-review-edit'>Cancel</button>
