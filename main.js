@@ -110,6 +110,7 @@ cancelReviewEdit.addEventListener('click', () => {
 signupForm.addEventListener('submit', (e) => {
     e.preventDefault()
     signupFunction()
+    signupForm.reset()
 })
 
 loginForm.addEventListener('submit', (e) => {
@@ -134,6 +135,7 @@ editBusinessForm.addEventListener('submit', (e) => {
 createReviewForm.addEventListener('submit', (e) => {
     e.preventDefault()
     let id = localStorage.getItem('businessId')
+    allUserEmails = []
     clearResults(allReviewsDiv)
     createReview(id)
 })
@@ -141,7 +143,7 @@ createReviewForm.addEventListener('submit', (e) => {
 editReviewForm.addEventListener('submit', (e) => {
     e.preventDefault()
     editReview()
-
+    allUserEmails = []
 })
 
 
@@ -247,7 +249,7 @@ displayName = (eachName, id) => {
     allBusinessesDiv.append(nameDiv)
     nameDiv.append(name)
     name.addEventListener('click', () => {
-        // addHidden(thanksScreen)
+        addHidden(thanksScreen)
         allUserEmails = []
         getSingle(id)
         clearResults(allReviewsDiv)
@@ -326,6 +328,7 @@ createReview = async (id) => {
         })
         // clearResults(allReviewsDiv)
         getAllReviews(id)
+        
     } catch (error) {
         error('nope')
     }
@@ -337,7 +340,7 @@ getAllReviews = async (id) => {
         clearAddReviewForm()
         let res = await axios.get(`http://localhost:3001/businesses/${id}/reviews`)
         let reviews = res.data.reviews
- 
+        console.log(reviews)
         calculateAvg(reviews)
         reviews.forEach(i => {
             let userId = i.userId
@@ -381,19 +384,6 @@ displayReviews = async (name, title, description, rating) => {
     let userEmail = res.data.userEmail
     allUserEmails.push(userEmail)
     console.log(allUserEmails)
-    // if (userEmail === localStorage.getItem('userEmail')) {
-    //     createReviewerButtons()
-    //     fillEditReviewForm(title, description, rating)
-    //     reviewFormDiv.classList.add('hidden')
-    //     thanksScreen.classList.remove('hidden')
-    //     console.log(userEmail)
-    //     console.log("DISPLAY THANKS SCREEN")
-    // } else {
-    //     // reviewFormDiv.classList.remove('hidden')
-    //     thanksScreen.classList.add('hidden')
-    //     reviewFormController()
-    //     console.log("HIDE THANKS")
-    // }
     let eachReviewDiv = document.createElement('div')
     let createdBy = document.createElement('p')
     let reviewTitle = document.createElement('h3')
@@ -404,24 +394,26 @@ displayReviews = async (name, title, description, rating) => {
     reviewDescription.innerText = description
     reviewRating.innerText = `${rating} out of 5`
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
-    allReviewsDiv.prepend(eachReviewDiv)
+    allReviewsDiv.append(eachReviewDiv)
+    console.log(title, description, rating)
     // createEditReviewButtons(userEmail, title, description, rating)
+    fillEditReviewForm(userEmail, title, description, rating)
     testFunction(title, description, rating)
+    
 
 }
 
 testFunction = (title, description, rating) => {
     if(allUserEmails.includes(localStorage.getItem('userEmail'))){
         createReviewerButtons()
-        fillEditReviewForm(title, description, rating)
+        // console.log(title, description, rating)
+        // fillEditReviewForm(title, description, rating)
         reviewFormDiv.classList.add('hidden')
         thanksScreen.classList.remove('hidden')
-        console.log("DISPLAY THANKS SCREEN")
     }
     else{
         thanksScreen.classList.add('hidden')
         reviewFormController()
-        console.log("HIDE THANKS")
     }
 }
 
@@ -556,7 +548,7 @@ reviewFormController = () => {
 
 deleteReviewActions = (id) => {
     clearResults(allReviewsDiv)
-   
+    allUserEmails = []
     removeHidden(reviewFormDiv, createReviewForm)
     addHidden(thanksScreen)
     getAllReviews(id)
@@ -616,10 +608,11 @@ fillEditDeleteForm = (name, address, type, description) => {
     document.querySelector('#edit-business-description').value = description
 }
 
-fillEditReviewForm = (title, description, rating) => {
+fillEditReviewForm = (email, title, description, rating) => {
+    if(email === localStorage.getItem('userEmail')){
     document.querySelector('#edit-review-title').value = title
     document.querySelector('#edit-review-description').value = description
-    document.querySelector('#edit-review-score').value = rating
+    document.querySelector('#edit-review-score').value = rating}
 }
 
 
