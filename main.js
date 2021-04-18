@@ -340,13 +340,15 @@ getAllReviews = async (id) => {
         let res = await axios.get(`${localHost}/businesses/${id}/reviews`)
         let reviews = res.data.reviews
         calculateAvg(reviews)
-        reviews.forEach(i => {
+        reviews.forEach((i, time) => {
+            setTimeout(() => {
             let userId = i.userId
             let reviewTitle = i.title
             let reviewDescription = i.description
             let reviewRating = i.rating
-            clearResults(allReviewsDiv)
+            // clearResults(allReviewsDiv)
             displayReviews(userId, reviewTitle, reviewDescription, reviewRating)
+            }, time * 50)
         })
     } catch (error) {
         alert("No reviews found")
@@ -375,9 +377,11 @@ displayAverageRating = (avg) => {
 
 //DISPLAY ALL THE REVIEWS
 displayReviews = async (name, title, description, rating) => {
-    // clearResults(allReviewsDiv)
     
+    console.log(name)
     let res = await axios.get(`${localHost}/users/${name}`)
+    
+    console.log(name)
     let userName = res.data.userName
     let userEmail = res.data.userEmail
     allUserEmails.push(userEmail)
@@ -391,11 +395,12 @@ displayReviews = async (name, title, description, rating) => {
     reviewTitle.innerText = `Title: ${title}`
     reviewDescription.innerText = `Description: ${description}`
     reviewRating.innerText = `${rating} out of 5`
-    console.log(title)
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.append(eachReviewDiv)
     fillEditReviewForm(userEmail, title, description, rating)
     testFunction(title, description, rating)
+    
+    
     
 
 }
