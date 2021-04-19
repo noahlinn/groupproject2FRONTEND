@@ -48,6 +48,7 @@ let allUserEmails = []
 const localHost = "http://localhost:3001"
 
 //BUTTON EVENT LISTENERS
+
 signupButton.addEventListener("click", () => {
     buttonController(signupScreen)
 })
@@ -68,8 +69,6 @@ allBusinessesButton.addEventListener("click", () => {
     buttonController(allBusinessesScreen)
     displayAllBusinesses()
     reviewFormController()
-    // reviewSection.classList.remove('hidden')
-
 })
 
 logoutButton.addEventListener('click', () => [
@@ -81,31 +80,27 @@ logoutButton.addEventListener('click', () => [
 
 editButton.addEventListener('click', () => {
     editBusinessForm.classList.remove('hidden')
-    reviewSection.classList.add('hidden')
-    ownerButtons.classList.add('hidden')
+    addHidden(reviewSection)
+    addHidden(ownerButtons)
 
 })
 
 cancelBusinessEdit.addEventListener('click', (e) => {
     e.preventDefault()
-    editBusinessForm.classList.add('hidden')
-    reviewSection.classList.remove('hidden')
-    ownerButtons.classList.remove('hidden')
+    addHidden(editBusinessForm)
+    removeHidden(reviewSection)
+    removeHidden(ownerButtons)
 })
 
 deletebutton.addEventListener('click', () => {
     deleteBusiness()
-    removeHidden(reviewFormDiv, createReviewForm)
     buttonController(allBusinessesScreen)
 })
 
-
 cancelReviewEdit.addEventListener('click', () => {
-    editReviewSection.classList.add('hidden')
-    reviewSection.classList.remove('hidden')
+    addHidden(editReviewSection)
+    removeHidden(reviewSection)
 })
-
-
 
 //FORM EVENT LISTENERS
 signupForm.addEventListener('submit', (e) => {
@@ -124,14 +119,15 @@ createBusinessForm.addEventListener('submit', (e) => {
     e.preventDefault()
     createBusiness()
     buttonController(allBusinessesScreen)
+    createBusinessForm.reset()
 })
 
 editBusinessForm.addEventListener('submit', (e) => {
     e.preventDefault()
     editBusiness()
     buttonController(allBusinessesScreen)
-    editBusinessForm.classList.add('hidden')
-    reviewSection.classList.remove('hidden')
+    addHidden(editBusinessForm)
+    removeHidden(reviewSection)
 })
 
 createReviewForm.addEventListener('submit', (e) => {
@@ -175,12 +171,9 @@ signupFunction = async () => {
             password: password,
         })
         let userId = res.data.userId
-        localStorage.setItem('userId', userId)
         let userName = res.data.userName
-        localStorage.setItem('userName', userName)
         let userEmail = res.data.userEmail
-        localStorage.setItem('userEmail', userEmail)
-
+        setLocalStorage (userId, userName, userEmail)
         buttonController(homeScreen)
         loginStateButtons()
         helloController()
@@ -202,9 +195,7 @@ loginFunction = async () => {
         let userId = res.data.userId
         let userName = res.data.userName
         let userEmail = res.data.userEmail
-        localStorage.setItem('userId', userId)
-        localStorage.setItem('userName', userName)
-        localStorage.setItem('userEmail', userEmail)
+        setLocalStorage(userId, userName, userEmail)
         loginStateButtons()
         buttonController(homeScreen)
         helloController()
@@ -228,6 +219,7 @@ displayAllBusinesses = async () => {
     }
 }
 
+//DISPLAY BY TYPE
 displayBy = async (type) => {
     clearResults(nameDiv)
     try {
@@ -238,7 +230,7 @@ displayBy = async (type) => {
             displayName(name, businessId)
         })
     } catch (error) {
-
+        
     }
 }
 
@@ -259,7 +251,6 @@ displayName = (eachName, id) => {
 
 //GETS INFO FOR ONE BUSINESS
 getSingle = async (id) => {
-
     try {
         clearResults(busiessInfoDiv)
         buttonController(singleBusinessSection)
@@ -268,8 +259,6 @@ getSingle = async (id) => {
         getAllReviews(id)
         diplayOneBusiness(res.data.business.name, res.data.business.address,
             res.data.business.type, res.data.business.description, res.data.owner.name, res.data.owner.email)
-
-
     } catch (error) {
 
     }
@@ -284,9 +273,9 @@ diplayOneBusiness = (name, address, type, description, owner, email) => {
         fillEditDeleteForm(name, address, type, description)
     }
     else {
-        ownerButtons.classList.add('hidden')
-        createReviewForm.classList.remove('hidden')
-        editBusinessForm.classList.add('hidden')
+        addHidden(ownerButtons)
+        removeHidden(createReviewForm)
+        addHidden(editBusinessForm)
         reviewFormController()
     }
 
@@ -307,7 +296,6 @@ diplayOneBusiness = (name, address, type, description, owner, email) => {
     averageHeader.innerText = "Average review: "
     busiessInfoDiv.append(nameHeader, displayType, displayAddress,
         displayDescription, createdBy, averageHeader)
-
 }
 
 //CREATE REVIEW
@@ -325,9 +313,7 @@ createReview = async (id) => {
             title: title,
             description: description
         })
-        // clearResults(allReviewsDiv)
-        getAllReviews(id)
-        
+        getAllReviews(id) 
     } catch (error) {
         error('nope')
     }
@@ -336,7 +322,7 @@ createReview = async (id) => {
 //GET ALL REVIEWS FOR EACH BUSINESS 
 getAllReviews = async (id) => {
     try {
-        clearAddReviewForm()
+        createReviewForm.reset()
         let res = await axios.get(`${localHost}/businesses/${id}/reviews`)
         let reviews = res.data.reviews
         calculateAvg(reviews)
@@ -346,17 +332,15 @@ getAllReviews = async (id) => {
             let reviewTitle = i.title
             let reviewDescription = i.description
             let reviewRating = i.rating
-            // clearResults(allReviewsDiv)
             displayReviews(userId, reviewTitle, reviewDescription, reviewRating)
             }, time * 50)
         })
     } catch (error) {
-        alert("No reviews found")
+        allReviewsDiv.innerHTML = "No reviews found"
     }
 }
 
-
-
+//CALCULATE AVERAGE REVIEW
 calculateAvg = (reviews) => {
     let ratingArr = []
     reviews.forEach(i => {
@@ -368,20 +352,16 @@ calculateAvg = (reviews) => {
     displayAverageRating(Math.round(averageRating * 10) / 10)
 }
 
+//DISPLAY AVERAGE REVIEW
 displayAverageRating = (avg) => {
     busiessInfoDiv.removeChild(busiessInfoDiv.lastElementChild)
     averageHeader.innerText = `Average Rating: ${avg}`
     busiessInfoDiv.append(averageHeader)
-
 }
 
 //DISPLAY ALL THE REVIEWS
 displayReviews = async (name, title, description, rating) => {
-    
-    console.log(name)
     let res = await axios.get(`${localHost}/users/${name}`)
-    
-    console.log(name)
     let userName = res.data.userName
     let userEmail = res.data.userEmail
     allUserEmails.push(userEmail)
@@ -398,26 +378,23 @@ displayReviews = async (name, title, description, rating) => {
     eachReviewDiv.append(reviewTitle, reviewRating, createdBy, reviewDescription)
     allReviewsDiv.append(eachReviewDiv)
     fillEditReviewForm(userEmail, title, description, rating)
-    testFunction(title, description, rating)
-    
-    
-    
-
+    displayThanks()
 }
 
-testFunction = (title, description, rating) => {
+//DISPLAY THANK YOU FOR REVIEW AND EDIT/DELETE REVIEW BUTTONS
+displayThanks = () => {
     if(allUserEmails.includes(localStorage.getItem('userEmail'))){
         createReviewerButtons()
-        reviewFormDiv.classList.add('hidden')
-        thanksScreen.classList.remove('hidden')
+        addHidden(reviewFormDiv)
+        removeHidden(thanksScreen)
     }
     else{
-        thanksScreen.classList.add('hidden')
+        addHidden(thanksScreen)
         reviewFormController()
     }
 }
 
-
+//CREATE EDIT/DELETE REVIEW BUTTONS
 createReviewerButtons = () => {
     clearResults(editReviewButtons)
     const buttonsDiv = document.createElement('div')
@@ -433,11 +410,11 @@ createReviewerButtons = () => {
     handleReviewButtons(editReview, deleteReview)
 }
 
+
 handleReviewButtons = (edit, deleted) => {
     edit.addEventListener('click', () => {
-        reviewSection.classList.add('hidden')
-        editReviewSection.classList.remove('hidden')
-
+        addHidden(reviewSection)
+        removeHidden(editReviewSection)
     })
 
     deleted.addEventListener('click', async () => {
@@ -462,15 +439,14 @@ editReview = async () => {
             rating: score
         })
         alert('Review Updated')
-        editReviewSection.classList.add('hidden')
-        reviewSection.classList.remove('hidden')
-        reviewFormDiv.classList.add('hidden')
+        addHidden(editReviewSection)
+        removeHidden(reviewSection)
+        addHidden(reviewFormDiv)
+        clearResults(allReviewsDiv)
         getAllReviews(businessId)
     } catch (error) {
-        error('Review failed to update')
     }
 }
-
 
 //CREATE BUSINESS 
 createBusiness = async () => {
@@ -516,6 +492,7 @@ editBusiness = async () => {
     }
 }
 
+//DELETE BUSINESS
 deleteBusiness = async () => {
     try {
         let businessId = localStorage.getItem('businessId')
@@ -526,10 +503,13 @@ deleteBusiness = async () => {
     }
 }
 
-
-
 //UTILITY FUNCTIONS
 
+setLocalStorage = (userId, userName, userEmail) => {
+    localStorage.setItem('userId', userId)
+    localStorage.setItem('userName', userName)
+    localStorage.setItem('userEmail', userEmail)
+}
 
 helloController = () => {
     if (localStorage.getItem('userName')) {
@@ -539,22 +519,20 @@ helloController = () => {
     }
 }
 
-
-
 reviewFormController = () => {
     if (localStorage.getItem('userId') === null) {
-        addHidden(createReviewForm, reviewFormDiv)
+        addHidden(createReviewForm)
     }
 }
 
 deleteReviewActions = (id) => {
     clearResults(allReviewsDiv)
     allUserEmails = []
-    removeHidden(reviewFormDiv, createReviewForm)
+    removeHidden(reviewFormDiv)
+    removeHidden(createReviewForm)
     addHidden(thanksScreen)
     getAllReviews(id)
 }
-
 
 logoutStateButtons = () => {
     removeHidden(loginButton)
@@ -574,7 +552,6 @@ buttonController = (thing) => {
     hideSections()
     removeHidden(thing)
 }
-
 
 hideSections = () => {
     sections.forEach(section => section.classList.add('hidden'))
@@ -601,7 +578,6 @@ else {
     logoutStateButtons()
 }
 
-
 fillEditDeleteForm = (name, address, type, description) => {
     document.querySelector('#edit-business-name').value = name
     document.querySelector('#edit-business-address').value = address
@@ -616,12 +592,4 @@ fillEditReviewForm = (email, title, description, rating) => {
     document.querySelector('#edit-review-score').value = rating}
 }
 
-
 helloController()
-
-
-clearAddReviewForm = () => {
-    document.querySelector('#review-score').value = ""
-    document.querySelector('#review-title').value = ""
-    document.querySelector('#review-description').value = ""
-}
