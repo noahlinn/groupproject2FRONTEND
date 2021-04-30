@@ -1,5 +1,9 @@
 # GA-Group-Project-2
 
+## Deployed Version 
+
+https://welpfrontend.herokuapp.com/
+
 ## Overview
 
 ---
